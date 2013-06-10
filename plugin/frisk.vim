@@ -4,7 +4,7 @@
 "Maintainer: Ryan Carney arecarn@gmail.com
 "License: This file is placed in the public domain.
 "
-command! Search call Search()
+command! Frisk call Search()
 
 "Search is list to store
 let g:Search=[]
