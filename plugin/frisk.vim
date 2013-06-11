@@ -1,8 +1,11 @@
 "A cross platform compatible (Windows/Linux/OSX) plugin that facilitates
 "entering a search terms and opening web browsers 
-"Last Change: 07 Jun 2013
+"Last Change: 11 Jun 2013
 "Maintainer: Ryan Carney arecarn@gmail.com
 "License: This file is placed in the public domain.
+"
+"Change Log
+"10 Jun 2013 added URL encoding 
 "
 command! Frisk call Search()
 
