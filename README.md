@@ -1,18 +1,19 @@
+Frisk
+=====
 Frisk is a web search launcher. From within Frisk you can choose a search
 engine, and enter your search terms without having to leave vim. Upon accepting
 a search your default browser will open with the results of your search.
 
 Usage
-=====
+-----
 :Frisk
 
 Demo
-====
-A screen capture demoing Frisk can be viewed here.
-http://screenr.com/Sn2H
+----
+A screen capture demoing Frisk can be viewed [HERE](http://screenr.com/Sn2H)
 
 Adding Your Own Search Engine
-=============================
+-----------------------------
 here's an example of how Bings Search engine infromation is stored in a plugin
 
     let g:Bing = {
@@ -29,5 +30,7 @@ can do
 
 
 
-This is my first Vim plugin so if you have any tips feel free to contact me or
-help to improve Frisk. 
+Make Frisk Better
+-----------------
+This is my first Vim plugin so if you have any tips or ideas to make frisk
+better feel free to contact me or open an issue.  
