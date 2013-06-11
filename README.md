@@ -14,9 +14,9 @@ A screen capture demoing Frisk can be viewed [HERE](http://screenr.com/Sn2H)
 
 Adding Your Own Search Engine
 -----------------------------
-here's an example of how Bing Search engine information is stored in a plugin
+Here's an example of how Bing Search engine information is stored in Frisk
 
-```
+```VimL
 let g:Bing = {
             \'name' : 'Bing', 
             \'types':{
