@@ -102,6 +102,7 @@ function! Search()
     let query = input('What Do You Want To Search: ')
     call inputrestore()
 
+    let query = EncodeSerch(query)
     "build the the search string and call the external program 
     let q = substitute(query, ' ', "+", "g")
     if has("mac")
@@ -112,6 +113,20 @@ function! Search()
         exe '!xdg-open ' . search_engine . q . "&" 
         "note that a "&" has to follow the search query for some reason
     endif
+endfunction
+
+function! EncodeSerch(q)
+    echo a:q
+    let list = split(a:q,'\zs')
+    echo list 
+   let hexList=[] 
+    for char in list
+        let char = substitute(char, '.',  '\=printf("%02X",char2nr(submatch(0)))', '')
+        let char =  '\\%' . char
+        call add(hexList, char)
+        echo char 
+    endfor
+    return join(hexList,"")
 endfunction
 
 " add checking for http:// and .com,.org ect 
