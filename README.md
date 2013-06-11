@@ -14,7 +14,7 @@ A screen capture demoing Frisk can be viewed [HERE](http://screenr.com/Sn2H)
 
 Adding Your Own Search Engine
 -----------------------------
-here's an example of how Bings Search engine infromation is stored in a plugin
+here's an example of how Bing Search engine information is stored in a plugin
 
 ```
 let g:Bing = {
