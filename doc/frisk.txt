@@ -1,0 +1,23 @@
+================================================================================
+      ___         ___                       ___           ___     
+     /  /\       /  /\        ___          /  /\         /__/|    
+    /  /:/_     /  /::\      /  /\        /  /:/_       |  |:|    
+   /  /:/ /\   /  /:/\:\    /  /:/       /  /:/ /\      |  |:|    
+  /  /:/ /:/  /  /:/~/:/   /__/::\      /  /:/ /::\   __|  |:|    
+ /__/:/ /:/  /__/:/ /:/___ \__\/\:\__  /__/:/ /:/\:\ /__/\_|:|____
+ \  \:\/:/   \  \:\/:::::/    \  \:\/\ \  \:\/:/~/:/ \  \:\/:::::/
+  \  \::/     \  \::/~~~~      \__\::/  \  \::/ /:/   \  \::/~~~~ 
+   \  \:\      \  \:\          /__/:/    \__\/ /:/     \  \:\     
+    \  \:\      \  \:\         \__\/       /__/:/       \  \:\    
+     \__\/       \__\/                     \__\/         \__\/    
+================================================================================
+ASCII font courtesy of Patrick Gillespie http://patorjk.com/
+================================================================================
+A brief overview of the plugin.
+A more in-depth description of how the plugin is used.
+Every single key mapping the plugin creates.
+Ways to extend the plugin, if applicable.
+All configuration variables (including their default values!).
+The plugin’s changelog.
+The plugin’s license.
+Links to the plugin’s repository and bug tracker.

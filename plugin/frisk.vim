@@ -125,7 +125,7 @@ function! EncodeSerch(q)
    let hexList=[] 
     for char in list
         let char = substitute(char, '.',  '\=printf("%02X",char2nr(submatch(0)))', '')
-        let char =  '\\%' . char
+        let char =  '%%' . char
         call add(hexList, char)
         echo char 
     endfor
