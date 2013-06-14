@@ -1,12 +1,21 @@
 "A cross platform compatible (Windows/Linux/OSX) plugin that facilitates
 "entering a search terms and opening web browsers 
-"Last Change: 11 Jun 2013
+"Last Change: 13 Jun 2013
 "Maintainer: Ryan Carney arecarn@gmail.com
-"License: This file is placed in the public domain.
+"License:        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+"                           Version 2, December 2004
 "
-"Change Log
-"10 Jun 2013 added URL encoding 
+"               Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
 "
+"      Everyone is permitted to copy and distribute verbatim or modified
+"     copies of this license document, and changing it is allowed as long
+"                           as the name is changed.
+"
+"                 DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+"       TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+"
+"                   0. You just DO WHAT THE FUCK YOU WANT TO
+
 command! Frisk call Search()
 
 "Search is list to store
@@ -119,15 +128,15 @@ function! Search()
 endfunction
 
 function! EncodeSerch(q)
-    echo a:q
+    "echo a:q
     let list = split(a:q,'\zs')
-    echo list 
+    "echo list 
    let hexList=[] 
     for char in list
-        let char = substitute(char, '.',  '\=printf("%02X",char2nr(submatch(0)))', '')
-        let char =  '%%' . char
+        let char = substitute(char, '.', '\=printf("%02X",char2nr(submatch(0)))', '')
+        let char =  '\%' . char
         call add(hexList, char)
-        echo char 
+        "echo char 
     endfor
     return join(hexList,"")
 endfunction

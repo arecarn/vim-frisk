@@ -13,11 +13,67 @@
 ================================================================================
 ASCII font courtesy of Patrick Gillespie http://patorjk.com/
 ================================================================================
-A brief overview of the plugin.
-A more in-depth description of how the plugin is used.
-Every single key mapping the plugin creates.
-Ways to extend the plugin, if applicable.
-All configuration variables (including their default values!).
-The plugin’s changelog.
-The plugin’s license.
-Links to the plugin’s repository and bug tracker.
+OVERVIEW 
+
+Frisk is a web search launcher. With Frisk within Vim you can choose a search
+engine, and enter your search terms without having to leave vim. Upon accepting
+a search your default browser will open with the results.
+
+================================================================================
+USAGE
+
+:Frisk
+
+================================================================================
+MAPPINGS
+
+None
+
+================================================================================
+EXTEND
+
+Adding Your Own Search Engine
+
+Here's an example of how Bing Search engine information is stored in Frisk
+
+let g:Bing = {
+            \'name' : 'Bing', 
+            \'types':{
+            \'video' : 'http://www.bing.com/video/search?q=',
+            \'images' : 'http://www.bing.com/images/search?q=',
+            \'web': 'http://www.bing.com/search?q='}}
+call add(g:Search, Bing)
+
+You might see how another search engine could easily be integrated into Frisk.
+If you would like another search engine added contact me and I'll see what I can
+do
+================================================================================
+CONFIGURATION
+
+None yet
+
+================================================================================
+Change Log
+10 Jun 2013 added URL encoding 
+13 Jun 2013 fixed URL encoding bug
+
+================================================================================
+LICENSE
+                 DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                            Version 2, December 2004
+ 
+                Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+ 
+       Everyone is permitted to copy and distribute verbatim or modified
+      copies of this license document, and changing it is allowed as long
+                            as the name is changed.
+ 
+                  DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+        TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ 
+                    0. You just DO WHAT THE FUCK YOU WANT TO
+================================================================================
+REPOSITORY AND BUG TRACKER.
+
+https://github.com/arecarn
+
