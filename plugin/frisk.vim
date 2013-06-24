@@ -47,6 +47,7 @@ let g:Google = {
             \'name':'Google', 
             \'types':{
             \'images' : 'http://images.google.com/images?q=',
+            \'translate' : 'http://translate.google.com/\#auto/en/',
             \'web' : 'https://www.google.com/search?q=' }}
 call add(g:Search, Google)
 
@@ -129,12 +130,12 @@ endfunction
 "===============================================================================
 function! s:GetSearchTerms(line1, line2)
 
-    echom a:line1 . "= line 1 your turd"
-    echom a:line2 . "= line 2 your turd"
+    "echom a:line1 . "= line 1 your turd"
+    "echom a:line2 . "= line 2 your turd"
     "
 
     let lineNum = line('$')
-    echo lineNum . "= number of lines in the file"
+    "echo lineNum . "= number of lines in the file"
 
 
     if (lineNum - 1) > (a:line2 - a:line1)
@@ -146,6 +147,7 @@ function! s:GetSearchTerms(line1, line2)
         call inputrestore()
     endif
 
+    "echo SearchTerms
     return SearchTerms
 endfunction
 
@@ -160,6 +162,7 @@ function! s:Search(engineString,query)
     let q = s:EncodeSerch(q)
     "build the search string and call the external program 
     let q = substitute(q, ' ', "+", "g")
+    "echo '[' q . ']= the search term'
     if has("mac")
         exe '!open ' . a:engineString . q
     elseif  has("win16") || has("win32") || has("win64")

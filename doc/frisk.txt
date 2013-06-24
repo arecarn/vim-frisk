@@ -20,6 +20,16 @@ OVERVIEW
 Frisk is a web search launcher. With Frisk within Vim you can choose a search
 engine, and enter your search terms without having to leave vim. Upon accepting
 a search your default browser will open with the results.
+
+Supported search engines 
+Bing (image, video, web)
+IMDb
+Stack Overflow
+Google (image, web, English translate)
+Wolfram Alpha 
+Wikipeida
+
+
 ================================================================================
 USAGE
 
