@@ -1,4 +1,4 @@
-frisk.txt Compose a Internet search from within Vim
+*frisk.txt* Compose a Internet search from within Vim
 frisk
 ================================================================================
       ___         ___                       ___           ___     
@@ -15,7 +15,7 @@ frisk
 ================================================================================
 ASCII font courtesy of Patrick Gillespie http://patorjk.com/
 ================================================================================
-OVERVIEW 
+*OVERVIEW* 
 
 Frisk is a web search launcher. With Frisk within Vim you can choose a search
 engine, and enter your search terms without having to leave vim. Upon accepting
@@ -31,17 +31,17 @@ Wikipeida
 
 
 ================================================================================
-USAGE
+*USAGE*
 
 :Frisk
 
 NOTE: ":Frisk" also works with visual selections instead of prompting for input 
 ================================================================================
-MAPPINGS
+*MAPPINGS*
 
 None
 ================================================================================
-EXTEND
+*EXTEND*
 
 Adding Your Own Search Engine
 
@@ -59,29 +59,22 @@ You might see how another search engine could easily be integrated into Frisk.
 If you would like another search engine added contact me and I'll see what I can
 do
 ================================================================================
-CONFIGURATION
+*CONFIGURATION*
 
 None yet
 ================================================================================
-TODO
+*TODO*
 
-* make more robust visual selections search that includes searching between a
-  range see:
-  http://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
 * default search e.g. :Frisk "search terms(s)" would use Google
 * quick access to search engines e.g. :Frisk Bing "search term(s)"
 * add globals to search engines can be disabled 
-================================================================================
-KNOWN PROBLEMS
-last visual selection is searched.
-
 ================================================================================
 CHANGE LOG
 14 Jun 2013 -added support for searching visual selection
 10 Jun 2013 -added URL encoding 
 13 Jun 2013 -fixed URL encoding bug
 ================================================================================
-LICENSE
+*LICENSE*
                  DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                             Version 2, December 2004
  
@@ -96,9 +89,9 @@ LICENSE
  
                     0. You just DO WHAT THE FUCK YOU WANT TO
 ================================================================================
-REPOSITORY AND BUG TRACKER.
+*REPOSITORY* *AND* *BUG* *TRACKER*
 
 https://github.com/arecarn/frisk
 ================================================================================
-vim:tw=80:sw=4:ft=help:norl:set conceallevel=0:
+vim:tw=80:sw=4:ft=help:norl:set 
 

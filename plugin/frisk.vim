@@ -140,7 +140,7 @@ function! s:GetSearchTerms(line1, line2)
 
     if (lineNum - 1) > (a:line2 - a:line1)
         let SearchTerms = s:get_visual_selection()
-        call visualmode(" ") "clear last visual mode var
+        "call visualmode(" ") "clear last visual mode var
     else
         call inputsave()
         let SearchTerms = input('What Do You Want To Search: ')
