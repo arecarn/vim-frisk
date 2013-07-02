@@ -1,6 +1,6 @@
 *frisk.txt* Compose a Internet search from within Vim
-frisk
-================================================================================
+*frisk*
+==============================================================================
       ___         ___                       ___           ___     
      /  /\       /  /\        ___          /  /\         /__/|    
     /  / /_     /  /  \      /  /\        /  / /_       |  | |    
@@ -12,35 +12,35 @@ frisk
    \  \ \      \  \ \          /__/ /    \__\/ / /     \  \ \     
     \  \ \      \  \ \         \__\/       /__/ /       \  \ \    
      \__\/       \__\/                     \__\/         \__\/    
-================================================================================
+==============================================================================
 ASCII font courtesy of Patrick Gillespie http://patorjk.com/
-================================================================================
+==============================================================================
 *OVERVIEW* 
 
 Frisk is a web search launcher. With Frisk within Vim you can choose a search
 engine, and enter your search terms without having to leave vim. Upon accepting
 a search your default browser will open with the results.
 
-Supported search engines 
-Bing (image, video, web)
-IMDb
-Stack Overflow
-Google (image, web, English translate)
-Wolfram Alpha 
-Wikipeida
+Supported search engines:
+* Bing (image, video, web)
+* IMDb
+* Stack Overflow
+* Google (image, web, English translate)
+* Wolfram Alpha 
+* Wikipeida
 
 
-================================================================================
+==============================================================================
 *USAGE*
 
 :Frisk
 
-NOTE: ":Frisk" also works with visual selections instead of prompting for input 
-================================================================================
+NOTE: ":Frisk" also works with visual selections instead of prompting for input
+==============================================================================
 *MAPPINGS*
 
 None
-================================================================================
+==============================================================================
 *EXTEND*
 
 Adding Your Own Search Engine
@@ -58,22 +58,22 @@ call add(g:Search, Bing)
 You might see how another search engine could easily be integrated into Frisk.
 If you would like another search engine added contact me and I'll see what I can
 do
-================================================================================
+==============================================================================
 *CONFIGURATION*
 
 None yet
-================================================================================
+==============================================================================
 *TODO*
 
 * default search e.g. :Frisk "search terms(s)" would use Google
 * quick access to search engines e.g. :Frisk Bing "search term(s)"
 * add globals to search engines can be disabled 
-================================================================================
+==============================================================================
 CHANGE LOG
 14 Jun 2013 -added support for searching visual selection
 10 Jun 2013 -added URL encoding 
 13 Jun 2013 -fixed URL encoding bug
-================================================================================
+==============================================================================
 *LICENSE*
                  DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                             Version 2, December 2004
@@ -88,10 +88,10 @@ CHANGE LOG
         TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  
                     0. You just DO WHAT THE FUCK YOU WANT TO
-================================================================================
+==============================================================================
 *REPOSITORY* *AND* *BUG* *TRACKER*
 
 https://github.com/arecarn/frisk
-================================================================================
-vim:tw=80:sw=4:ft=help:norl:set 
+==============================================================================
+vim:tw=78:sw=4:ft=help:norl:set 
 

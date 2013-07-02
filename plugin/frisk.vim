@@ -21,49 +21,109 @@
 "Search Engines                                                              {{{
 "===============================================================================
 "Search is list to store
-let g:Search=[]
+let s:search=[]
+"Bing{{{2
+let g:frisk_bing_enable = 1
+if g:frisk_bing_enable == 1
+    let s:bing = {
+                \'name' : 'bing', 
+                \'types':{
+                \'video' : 'http://www.bing.com/video/search?q=',
+                \'images' : 'http://www.bing.com/images/search?q=',
+                \'web': 'http://www.bing.com/search?q='}}
+    call add(s:search, s:bing)
+endif
+"}}}2
+"IMDb {{{2
+let g:frisk_imdb_enable = 1
+if g:frisk_imdb_enable == 1
+    let s:imdb={
+                \'name' : 'imdb',
+                \'types':{
+                \'information' : 'http://www.imdb.com/find?q='}}
+    call add(s:search, s:imdb)
+endif
+"}}}2
+"Google {{{2
+let g:frisk_google_enable  =  1
+if g:frisk_google_enable  ==  1
+    let s:google = {
+                \'name':'google', 
+                \'types':{
+                \'images' : 'http://images.google.com/images?q=',
+                \'translate' : 'http://translate.google.com/\#auto/en/',
+                \'web' : 'https://www.google.com/search?q=' }}
+    call add(s:search, s:google)
+endif
+"}}}2
+"Stack Overflow {{{2
+let g:frisk_stackoverflow_enable = 1
+if g:frisk_stackoverflow_enable == 1
+    let s:stackoverflow={
+                \'name' : 'stack overflow',
+                \'types':{
+                \'information' : 'http://stackoverflow.com/search?q='}}
+    call add(s:search, s:stackoverflow)
+endif
+"}}}2
+"Wikipedia {{{2
+let g:frisk_wikipedia_enable  =  1
+if g:frisk_wikipedia_enable  ==  1
+    let s:wikipedia = {
+                \'name' : 'wikipedia',
+                \'types': {
+                \'information' : 'http://en.wikipedia.org/w/index.php?search='}} 
+    call add(s:search, s:wikipedia)
+endif
+"}}}2
+"Wolfram Alpha {{{2
+let g:frisk_wolframalpha_enable  =  1
+if g:frisk_wolframalpha_enable  ==  1
+    let s:wolframalpha = {
+                \'name' : 'wolfram alpha',
+                \'types':{
+                \'information' : 'http://www.wolframalpha.com/input/?i='}}
+    call add(s:search, s:wolframalpha)
+    "echom string(search)
+endif 
+" }}}2
+let g:frisk_default_engine = 'Google'
+"==========================================================================}}}
+"s:Setdefualtengine                                                        {{{ 
+"=============================================================================
+function! s:SetDefualtEngine()
+    if g:frisk_default_engine ==? 'bing images'
+        let s:default_engine = s:bing.types.images
 
-let g:Bing = {
-            \'name' : 'Bing', 
-            \'types':{
-            \'video' : 'http://www.bing.com/video/search?q=',
-            \'images' : 'http://www.bing.com/images/search?q=',
-            \'web': 'http://www.bing.com/search?q='}}
-call add(g:Search, Bing)
+    elseif g:frisk_default_engine ==? 'bing' 
+        let s:default_engine = s:bing.types.web
 
-let g:IMDb={
-            \'name' : 'IMDb',
-            \'types':{
-            \'information' : 'http://www.imdb.com/find?q='}}
-call add(g:Search, IMDb)
+    elseif g:frisk_default_engine ==? 'bing video' 
+        let s:default_engine = s:bing.types.video
 
-let g:StackOverflow={
-            \'name' : 'Stack Overflow',
-            \'types':{
-            \'information' : 'http://stackoverflow.com/search?q='}}
-call add(g:Search, StackOverflow)
+    elseif g:frisk_default_engine ==? 'imdb' 
+        let s:default_engine = s:imdb.types.information
 
-let g:Google = {
-            \'name':'Google', 
-            \'types':{
-            \'images' : 'http://images.google.com/images?q=',
-            \'translate' : 'http://translate.google.com/\#auto/en/',
-            \'web' : 'https://www.google.com/search?q=' }}
-call add(g:Search, Google)
+    elseif g:frisk_default_engine ==? 'google' 
+        echom ' here is the test balls balls'
+        let s:default_engine = s:google.types.web
 
-let g:Wikipedia = {
-            \'name' : 'Wikipedia',
-            \'types': {
-            \'information' : 'http://en.wikipedia.org/w/index.php?search='}} 
-call add(g:Search, Wikipedia)
+    elseif g:frisk_default_engine ==? 'google images' 
+        let s:default_engine = s:google.types.images
 
-let g:WolframAlpha = {
-            \'name' : 'Wolfram Alpha',
-            \'types':{
-            \'information' : 'http://www.wolframalpha.com/input/?i='}}
-call add(g:Search, WolframAlpha)
-"echom string(search)
+    elseif g:frisk_default_engine ==? 'google translate' 
+        let s:default_engine = s:google.types.translate
 
+    elseif g:frisk_default_engine ==? 'stack overflow' 
+        let s:default_engine = s:stackoverflow.types.information
+
+    elseif g:frisk_default_engine ==? 'wikipedia' 
+        let s:default_engine = s:wikipedia.types.information
+
+    elseif  g:frisk_default_engine ==? 'wolfram alpha'
+        let s:default_engine = s:wolframalpha.types.information
+    endif 
+endfunction
 
 "============================================================================}}}
 "BuildEngineList() {{{
@@ -72,7 +132,7 @@ call add(g:Search, WolframAlpha)
 function! s:BuildEngineList()
     let i = 1
     let list = [] 
-    for eng in g:Search
+    for eng in s:search
         call add(list, string(i) . ". " . eng.name)
         "echom string(list)
         let i = i + 1 
@@ -85,6 +145,7 @@ endfunction
 " prompt the user to choose one of the 
 "===============================================================================
 function! s:PromptEngine(list)
+    redraw
     "prompt the user for their search engine of choice
     let engineName = inputlist(a:list) 
     "return if invalid range
@@ -94,7 +155,8 @@ function! s:PromptEngine(list)
     else
         return
     endif 
-    return engineName
+    return engineName 
+    "returns a number in the search list
 endfunction
 
 "============================================================================}}}
@@ -103,9 +165,10 @@ endfunction
 " if there is only one option for the search then defualt to it. 
 "===============================================================================
 function! s:PromptEngineOptions(engineName)
-    if len(keys(g:Search[a:engineName].types)) > 1 
+    redraw
+    if len(keys(s:search[a:engineName].types)) > 1 
         let type_choices = ''
-        for type in keys(g:Search[a:engineName].types)
+        for type in keys(s:search[a:engineName].types)
             let type_choices = type_choices . '&' . type . "\n"
             "echom type_choices
         endfor
@@ -115,13 +178,12 @@ function! s:PromptEngineOptions(engineName)
         let type_choice = 0
     endif 
 
-    let type_keys = keys(g:Search[a:engineName].types)
+    let type_keys = keys(s:search[a:engineName].types)
     "echom type_keys
     let type_key = type_keys[type_choice]
     "echom type_key
 
-    let engineString = g:Search[a:engineName].types[type_key]
-    "echom engineString
+    let engineString = s:search[a:engineName].types[type_key]
     return engineString
 endfunction
 
@@ -129,6 +191,7 @@ endfunction
 "GetSearchTerms()                                                            {{{
 "===============================================================================
 function! s:GetSearchTerms(line1, line2)
+    redraw
 
     "echom a:line1 . "= line 1 your turd"
     "echom a:line2 . "= line 2 your turd"
@@ -154,7 +217,7 @@ endfunction
 "============================================================================}}}
 "Search()                                                                    {{{
 "===============================================================================
-function! s:Search(engineString,query)
+function! s:search(engineString,query)
     "TODO should input be bundled into a function?
     "ask the user what they would like to search 
 
@@ -246,37 +309,24 @@ function! s:Doit()
 endfunction
 
 "============================================================================}}}
-"gs command()                                                                {{{
-"===============================================================================
-" add checking for http:// and .com,.org ect 
-" else just searches google?
-"browser commands gs to goto a site check to see if http exists 
-"TODO make this ish better 
-" compatiblity with visual selection?
-" check for http? or keep current abilities? 
-if  has("win16") || has("win32") || has("win64")
-    nnoremap gs yiW:silent ! start /min <C-R>"<CR>
-elseif has('mac')
-    nnoremap gs yiW:!open '<C-R>"'<CR>
-elseif has('unix')
-    nnoremap gs yiW:!xdg-open '<C-R>"'&<CR> 
-endif
-"============================================================================}}}
 "Frisk() {{{
 "===============================================================================
-function! Frisk(...) range
+function! Frisk(search_string) range
     let EngineList = s:BuildEngineList() 
-    let Engine = s:PromptEngine(EngineList)
-    let EngineOptions = s:PromptEngineOptions(Engine)
-"    echom a:firstline . "= the first line"
-"    echom a:lastline . " = the last line"
-    let query = s:GetSearchTerms(a:firstline, a:lastline)
-    call s:Search(EngineOptions,query)
+    if a:search_string == ''
+        let Engine = s:PromptEngine(EngineList)
+        let EngineOptions = s:PromptEngineOptions(Engine)
+        let query = s:GetSearchTerms(a:firstline, a:lastline)
+        call s:search(EngineOptions,query)
+    else
+        call s:SetDefualtEngine()
+        call s:search(s:default_engine, a:search_string)
+    endif 
 endfunction
 "============================================================================}}}
 "Commands {{{
 "===============================================================================
 command! FriskOld call Search()
-command! -nargs=* -range=% Frisk <line1>,<line2>call Frisk(<f-args>)
+command! -nargs=* -range=% Frisk <line1>,<line2>call Frisk('<args>')
 
 "============================================================================}}}
