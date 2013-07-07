@@ -24,7 +24,12 @@ Usage
 
 Demo
 ----
-A screen capture demoing Frisk can be viewed [here](http://screenr.com/Sn2H)
+
+![Multiple Search Engines Demo](http://i.minus.com/iZsEpbCPc8PSC.gif)
+
+![Visual Selection Demo](http://i.minus.com/ibyU9aYE4tcFs6.gif)
+
+![Defualt Search Demo](http://i.minus.com/ibk6UbFKFTZAtB.gif)
 
 CONFIGURATION
 -------------
