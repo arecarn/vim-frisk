@@ -1,7 +1,9 @@
-"Header{{{
-"A cross platform compatible (Windows/Linux/OSX) plugin that facilitates
+"=============================================================================
+"Header                                                                    {{{
+"=============================================================================
+""A cross platform compatible (Windows/Linux/OSX) plugin that facilitates
 "entering a search terms and opening web browsers 
-"Last Change: 14 Jun 2013
+"Last Change: 06 Jul 2013
 "Maintainer: Ryan Carney arecarn@gmail.com
 "License:        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 "                           Version 2, December 2004
@@ -17,11 +19,13 @@
 "
 "                   0. You just DO WHAT THE FUCK YOU WANT TO
 
-"============================================================================}}}
-"Search Engines                                                              {{{
-"===============================================================================
+"==========================================================================}}}
+" Search Engines                                                            {{{
+" the is where all the search engine objects are defined
+"=============================================================================
 "Search is list to store
-let s:search=[]
+let s:searchlist=[]
+let g:frisk_default_engine = 'Google'
 "Bing{{{2
 let g:frisk_bing_enable = 1
 if g:frisk_bing_enable == 1
@@ -31,7 +35,7 @@ if g:frisk_bing_enable == 1
                 \'video' : 'http://www.bing.com/video/search?q=',
                 \'images' : 'http://www.bing.com/images/search?q=',
                 \'web': 'http://www.bing.com/search?q='}}
-    call add(s:search, s:bing)
+    call add(s:searchlist, s:bing)
 endif
 "}}}2
 "IMDb {{{2
@@ -41,7 +45,7 @@ if g:frisk_imdb_enable == 1
                 \'name' : 'imdb',
                 \'types':{
                 \'information' : 'http://www.imdb.com/find?q='}}
-    call add(s:search, s:imdb)
+    call add(s:searchlist, s:imdb)
 endif
 "}}}2
 "Google {{{2
@@ -53,7 +57,7 @@ if g:frisk_google_enable  ==  1
                 \'images' : 'http://images.google.com/images?q=',
                 \'translate' : 'http://translate.google.com/\#auto/en/',
                 \'web' : 'https://www.google.com/search?q=' }}
-    call add(s:search, s:google)
+    call add(s:searchlist, s:google)
 endif
 "}}}2
 "Stack Overflow {{{2
@@ -63,7 +67,7 @@ if g:frisk_stackoverflow_enable == 1
                 \'name' : 'stack overflow',
                 \'types':{
                 \'information' : 'http://stackoverflow.com/search?q='}}
-    call add(s:search, s:stackoverflow)
+    call add(s:searchlist, s:stackoverflow)
 endif
 "}}}2
 "Wikipedia {{{2
@@ -73,7 +77,7 @@ if g:frisk_wikipedia_enable  ==  1
                 \'name' : 'wikipedia',
                 \'types': {
                 \'information' : 'http://en.wikipedia.org/w/index.php?search='}} 
-    call add(s:search, s:wikipedia)
+    call add(s:searchlist, s:wikipedia)
 endif
 "}}}2
 "Wolfram Alpha {{{2
@@ -83,13 +87,13 @@ if g:frisk_wolframalpha_enable  ==  1
                 \'name' : 'wolfram alpha',
                 \'types':{
                 \'information' : 'http://www.wolframalpha.com/input/?i='}}
-    call add(s:search, s:wolframalpha)
+    call add(s:searchlist, s:wolframalpha)
     "echom string(search)
 endif 
 " }}}2
-let g:frisk_default_engine = 'Google'
 "==========================================================================}}}
-"s:Setdefualtengine                                                        {{{ 
+" s:Setdefualtengine                                                        {{{ 
+" set the default search engine based on the value of g:frisk_default_engine
 "=============================================================================
 function! s:SetDefualtEngine()
     if g:frisk_default_engine ==? 'bing images'
@@ -125,14 +129,14 @@ function! s:SetDefualtEngine()
     endif 
 endfunction
 
-"============================================================================}}}
-"BuildEngineList() {{{
-"TODO add globals to enable/disable search engines
-"===============================================================================
+"==========================================================================}}}
+" s:BuildEngineList()                                                         {{{
+" combine all the search engines into one list
+"=============================================================================
 function! s:BuildEngineList()
     let i = 1
     let list = [] 
-    for eng in s:search
+    for eng in s:searchlist
         call add(list, string(i) . ". " . eng.name)
         "echom string(list)
         let i = i + 1 
@@ -140,10 +144,10 @@ function! s:BuildEngineList()
     return list
 endfunction
 
-"============================================================================}}}
-" PromptEngine()                                                             {{{
+"==========================================================================}}}
+" s:PromptEngine(list)                                                           {{{
 " prompt the user to choose one of the 
-"===============================================================================
+"=============================================================================
 function! s:PromptEngine(list)
     redraw
     "prompt the user for their search engine of choice
@@ -159,16 +163,16 @@ function! s:PromptEngine(list)
     "returns a number in the search list
 endfunction
 
-"============================================================================}}}
-" PromptEngineOptions(engineName)                                            {{{
+"==========================================================================}}}
+" s:PromptEngineOptions(engineName)                                          {{{
 " prompt the user for different options for thier search engine
 " if there is only one option for the search then defualt to it. 
-"===============================================================================
+"=============================================================================
 function! s:PromptEngineOptions(engineName)
     redraw
-    if len(keys(s:search[a:engineName].types)) > 1 
+    if len(keys(s:searchlist[a:engineName].types)) > 1 
         let type_choices = ''
-        for type in keys(s:search[a:engineName].types)
+        for type in keys(s:searchlist[a:engineName].types)
             let type_choices = type_choices . '&' . type . "\n"
             "echom type_choices
         endfor
@@ -178,46 +182,40 @@ function! s:PromptEngineOptions(engineName)
         let type_choice = 0
     endif 
 
-    let type_keys = keys(s:search[a:engineName].types)
+    let type_keys = keys(s:searchlist[a:engineName].types)
     "echom type_keys
     let type_key = type_keys[type_choice]
     "echom type_key
 
-    let engineString = s:search[a:engineName].types[type_key]
+    let engineString = s:searchlist[a:engineName].types[type_key]
     return engineString
 endfunction
 
-"============================================================================}}}
-"GetSearchTerms()                                                            {{{
-"===============================================================================
+"==========================================================================}}}
+" s:GetSearchTerms(line1, line2)                                                          {{{
+" Determine if a visual selection was given or if the user needs to be
+" prompted for input
+"=============================================================================
 function! s:GetSearchTerms(line1, line2)
     redraw
-
-    "echom a:line1 . "= line 1 your turd"
-    "echom a:line2 . "= line 2 your turd"
-    "
-
     let lineNum = line('$')
     "echo lineNum . "= number of lines in the file"
-
-
-    if (lineNum - 1) > (a:line2 - a:line1)
+    if (lineNum - 1) > (a:line2 - a:line1) "TODO if line = 1 in file
         let SearchTerms = s:get_visual_selection()
-        "call visualmode(" ") "clear last visual mode var
     else
         call inputsave()
         let SearchTerms = input('What Do You Want To Search: ')
         call inputrestore()
     endif
-
     "echo SearchTerms
     return SearchTerms
 endfunction
 
-"============================================================================}}}
-"Search()                                                                    {{{
-"===============================================================================
-function! s:search(engineString,query)
+"==========================================================================}}}
+" s:Search(engineString, query)                                                                  {{{
+" execute the search and open the browser
+"=============================================================================
+function! s:Search(engineString,query)
     "TODO should input be bundled into a function?
     "ask the user what they would like to search 
 
@@ -236,9 +234,11 @@ function! s:search(engineString,query)
     endif
 endfunction
 
-"============================================================================}}}
-"EncodeSearch()                                                              {{{
-"===============================================================================
+"==========================================================================}}}
+" s:EncodeSearch(q)                                                            {{{
+" encode the search so non reserved charactes can be used in searches.
+" http://webdesign.about.com/library/bl_url_encoding_table.htm
+"=============================================================================
 function! s:EncodeSerch(q)
     "echo a:q
     let list = split(a:q,'\zs')
@@ -253,22 +253,11 @@ function! s:EncodeSerch(q)
     return join(hexList,"")
 endfunction
 
-"============================================================================}}}
-"GetVisaulSelection()                                                        {{{
-"NOTE: have some kind of check to see if in visual mode when frisk is called
-"===============================================================================
-function! s:GetVisaulSelection()
-    let old_z = @z
-    normal! gv"zy
-    let selection = @z
-    let @z = old_z
-    return selection
-endfunction
-
-"============================================================================}}}
-"get_visual_selection()                                                        {{{
-"Credit: Peter Rodding http://peterodding.com/code/ 
-"===============================================================================
+"==========================================================================}}}
+" s:get_visual_selection()                                                    {{{
+" Credit: Peter Rodding http://peterodding.com/code/ 
+" returns the visual selection 
+"=============================================================================
 function! s:get_visual_selection()
     " Why is this not a built-in Vim script function?!
     let [lnum1, col1] = getpos("'<")[1:2]
@@ -278,54 +267,30 @@ function! s:get_visual_selection()
     let lines[0] = lines[0][col1 - 1:]
     return join(lines, "\n")
 endfunction
-
-"============================================================================}}}
-"ExecuteOnVisual()                                                           {{{
-"NOTE: have some kind of check to see if in visual mode when frisk is called
-"===============================================================================
-function! s:ExecuteOnVisual(function_name)
-    let old_z = @z
-    normal! gv"zy
-    let ExecuteOnVisualFunc= function(a:function_name)
-    call ExecuteOnVisualFunc(@z)
-    let @z = old_z
-endfunction
-
-"============================================================================}}}
-"Echom()                                                                     {{{
-"NOTE: have some kind of check to see if in visual mode when frisk is called
-"TODO REMOVE
-"===============================================================================
-function! s:Echom(message)
-    echom a:message
-endfunction
-
-"============================================================================}}}
-"Doit()                                                                      {{{
-"TODO REMOVE
-"===============================================================================
-function! s:Doit()
-    call Execute_On_Visual("Echom")
-endfunction
-
-"============================================================================}}}
-"Frisk() {{{
-"===============================================================================
-function! Frisk(search_string) range
+"==========================================================================}}}
+" Frisk(lineone, linetwo, search_string)                                                                   {{{
+" The top level function 
+"=============================================================================
+function! Frisk(lineone, linetwo, search_string)
     let EngineList = s:BuildEngineList() 
     if a:search_string == ''
         let Engine = s:PromptEngine(EngineList)
         let EngineOptions = s:PromptEngineOptions(Engine)
-        let query = s:GetSearchTerms(a:firstline, a:lastline)
-        call s:search(EngineOptions,query)
+        let query = s:GetSearchTerms(a:lineone, a:linetwo)
+        call s:Search(EngineOptions,query)
     else
         call s:SetDefualtEngine()
-        call s:search(s:default_engine, a:search_string)
+        call s:Search(s:default_engine, a:search_string)
     endif 
 endfunction
-"============================================================================}}}
-"Commands {{{
-"===============================================================================
-command! -nargs=* -range=% Frisk <line1>,<line2>call Frisk('<args>')
+"==========================================================================}}}
+" Command                                                                  {{{
+" if a command :Frisk already mapped then the command won't be remapped 
+"=============================================================================
+if !hasmapto(':Frisk')
+    command! -nargs=* -range=% Frisk call Frisk(<line1>,<line2>,'<args>')
+endif
 
-"============================================================================}}}
+"==========================================================================}}}
+"Note functions that take a range of the whole file go the top of the file (or
+"slelection) during execution 

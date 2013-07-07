@@ -1,8 +1,12 @@
 Frisk
 =====
-Frisk is a web search launcher. With Frisk within Vim you can choose a search
-engine, and enter your search terms without having to leave vim. Upon accepting
-a search your default browser will open with the results. 
+
+Overview
+--------
+Frisk is a web search launcher compatible with Windows, OSX, and Linux. With
+Frisk within Vim you can choose a search engine, and enter your search terms
+without having to leave Vim. Upon accepting a search your default browser will
+open with the results.
 
 **Supported Search Engines:**
 * Bing (image, video, web)
@@ -14,11 +18,33 @@ a search your default browser will open with the results.
 
 Usage
 -----
-:Frisk
+:Frisk<CR>
+:Frisk "search terms"<CR>  <-- uses the default search engine 
+:'<,'>Frisk<CR> <-- use visual selections instead of prompting for input
 
 Demo
 ----
 A screen capture demoing Frisk can be viewed [here](http://screenr.com/Sn2H)
+
+CONFIGURATION
+-------------
+> g:frisk_default_engine
+
+Default = "google"
+
+Sets the default search engine for when Frisk is called with search terms
+
+Possible values:
+- "bing images"
+- "bing" 
+- "bing video" 
+- "imdb" 
+- "google" 
+- "google images" 
+- "google translate" 
+- "stack overflow" 
+- "wikipedia" 
+- "wolfram alpha"
 
 Adding Your Own Search Engine
 -----------------------------
@@ -39,8 +65,25 @@ If you would like another search engine added contact me and I'll see what I
 can do
 
 
+Known Issues
+------------
+- Can't make visual selection on a buffer with only 1 line 
 
 Make Frisk Better
 -----------------
-This is my first Vim plugin so if you have any tips or ideas to make frisk
-better feel free to contact me or open an issue.  
+I'm pretty new to Vim Script so any tips are appreciated. Think you can make
+Frisk better? Fork it on GitHub and send a pull request. If you find bugs, want
+new functionality, or would like another search engine added contact me by
+making an issue on GitHub and I'll see what I can do. 
+
+
+Credits
+-------
+- https://github.com/wcaleb/se-aliases/blob/master/se-aliases.sh
+  W. Caleb McDaniel aka 'wcaleb' provided some of the search engine URLs
+
+- http://www.if-not-true-then-false.com/2009/google-search-from-linux-and-unix-command-line/
+  'JR' provided dome of the search engine URLs
+
+- http://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
+  Peter Rodding aka 'xolox' provided function to capture visual selection
