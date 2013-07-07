@@ -25,7 +25,7 @@ Usage
 Demo
 ----
 
-![Multiple Search Engines Demo](http://i.minus.com/iZsEpbCPc8PSC.gif)
+![Multiple Search Engines Demo](http://i.minus.com/i2HWbrqF4IxHk.gif)
 
 ![Visual Selection Demo](http://i.minus.com/ibyU9aYE4tcFs6.gif)
 
