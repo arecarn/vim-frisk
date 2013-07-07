@@ -49,7 +49,16 @@ Possible values:
 - "google translate" 
 - "stack overflow" 
 - "wikipedia" 
+> ============================================================================<`0}
 - "wolfram alpha"
+
+Installation
+-------------
+Use your favorite addon manager.
+* [Neobundle](https://github.com/Shougo/neobundle.vim) <-- I use this one
+* [Vundle](https://github.com/gmarik/vundle)
+* [pathogen](https://github.com/tpope/vim-pathogen), 
+* [VAM](https://github.com/MarcWeber/vim-addon-manager)
 
 Adding Your Own Search Engine
 -----------------------------
