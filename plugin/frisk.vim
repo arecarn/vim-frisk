@@ -109,7 +109,6 @@ function! s:SetDefualtEngine()
         let s:default_engine = s:imdb.types.information
 
     elseif g:frisk_default_engine ==? 'google' 
-        echom ' here is the test balls balls'
         let s:default_engine = s:google.types.web
 
     elseif g:frisk_default_engine ==? 'google images' 
