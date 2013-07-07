@@ -3,7 +3,7 @@
 "=============================================================================
 ""A cross platform compatible (Windows/Linux/OSX) plugin that facilitates
 "entering a search terms and opening web browsers 
-"Last Change: 06 Jul 2013
+"Last Change: 07 Jul 2013
 "Maintainer: Ryan Carney arecarn@gmail.com
 "License:        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 "                           Version 2, December 2004
@@ -223,7 +223,7 @@ function! s:Search(engineString,query)
     "build the search string and call the external program 
     let q = substitute(q, ' ', "+", "g")
     "echo '[' q . ']= the search term'
-    if has("mac")
+    if has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n"
         exe '!open ' . a:engineString . q
     elseif  has("win16") || has("win32") || has("win64")
         exe 'silent! ! start /min ' . a:engineString . q

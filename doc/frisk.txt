@@ -108,6 +108,7 @@ You might see how another search engine could easily be integrated into Frisk.
 ==============================================================================
 6. *CHANGE_LOG*                                                   *FriskChangeLog*
 
+07 Jul 2013 - fixed bug on OS X terminal using xdg-open ratner than open
 06 Jul 2013 - added support for default engine and disabling engines
 14 Jun 2013 - added support for searching visual selection 
 10 Jun 2013 - added URL encoding 13 Jun 2013 -fixed URL encoding bug
