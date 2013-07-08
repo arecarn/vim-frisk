@@ -122,7 +122,7 @@ Sources and credits for the plugin
   W. Caleb McDaniel aka 'wcaleb' provided some of the search engine URLs
 
 - http://www.if-not-true-then-false.com/2009/google-search-from-linux-and-unix-command-line/
-  'JR' provided dome of the search engine URLs
+  'JR' provided some of the search engine URLs
 
 - http://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
   Peter Rodding aka 'xolox' provided function to capture visual selection
