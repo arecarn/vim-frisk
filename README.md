@@ -17,7 +17,7 @@ For a little more detail why this plugin was written see my post
 * Stack Overflow
 * Google (image, web, English-translate)
 * Wolfram Alpha 
-* Wikipeida
+* Wikipedia
 
 Usage
 -----
