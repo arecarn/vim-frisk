@@ -108,6 +108,7 @@ You might see how another search engine could easily be integrated into Frisk.
 ==============================================================================
 6. *CHANGE_LOG*                                                   *FriskChangeLog*
 
+08 Jul 2013 - added support for Zsh for mac and linux
 07 Jul 2013 - fixed bug on OS X terminal using xdg-open rather than open
 06 Jul 2013 - added support for default engine and disabling engines
 14 Jun 2013 - added support for searching visual selection 

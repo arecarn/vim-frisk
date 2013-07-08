@@ -3,7 +3,7 @@
 "=============================================================================
 ""A cross platform compatible (Windows/Linux/OSX) plugin that facilitates
 "entering a search terms and opening web browsers 
-"Last Change: 07 Jul 2013
+"Last Change: 08 Jul 2013
 "Maintainer: Ryan Carney arecarn@gmail.com
 "License:        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 "                           Version 2, December 2004
@@ -185,7 +185,6 @@ function! s:PromptEngineOptions(engineName)
     "echom type_keys
     let type_key = type_keys[type_choice]
     "echom type_key
-
     let engineString = s:searchlist[a:engineName].types[type_key]
     return engineString
 endfunction
@@ -218,18 +217,32 @@ function! s:Search(engineString,query)
     "TODO should input be bundled into a function?
     "ask the user what they would like to search 
 
+    let eng = a:engineString
     let q = a:query
     let q = s:EncodeSerch(q)
     "build the search string and call the external program 
     let q = substitute(q, ' ', "+", "g")
     "echo '[' q . ']= the search term'
-    if has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n"
-        exe '!open ' . a:engineString . q
-    elseif  has("win16") || has("win32") || has("win64")
-        exe 'silent! ! start /min ' . a:engineString . q
-    elseif has("unix")
-        exe '!xdg-open ' . a:engineString . q . "&" 
-        "note that a "&" has to follow the search query for some reason
+
+    if  has("win16") || has("win32") || has("win64")
+        exe 'silent! ! start /min ' . eng . q
+    elseif has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n" || has("unix")
+
+        "check for Zsh
+        redir => s:hasZsh | set shell? | redir END
+        "if Zsh is being used escape the engineString
+        echom "[".matchstr(s:hasZsh, "zsh")."] this is the match"
+        if matchstr(s:hasZsh, "zsh")  == "zsh" 
+            let eng = substitute(eng, '\(.\)' , '\\\1' , 'g')
+        endif 
+
+        if has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n"
+            exe '!open ' . eng . q
+        elseif has("unix")
+            exe '!xdg-open ' . eng . q . "&" 
+            "note that a "&" has to follow the search query for some reason
+        endif
+
     endif
 endfunction
 
