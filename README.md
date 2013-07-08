@@ -3,7 +3,7 @@ Frisk
 
 Overview
 --------
-Frisk is a web search launcher compatible with Windows, OSX, and Linux. With
+Frisk is a web search launcher compatible with Windows, OS X, and Linux. With
 Frisk within Vim you can choose a search engine, and enter your search terms
 without having to leave Vim. Upon accepting a search your default browser will
 open with the results.
@@ -15,7 +15,7 @@ For a little more detail why this plugin was written see my post
 * Bing (image, video, web)
 * IMDb
 * Stack Overflow
-* Google (image, web, english-translate)
+* Google (image, web, English-translate)
 * Wolfram Alpha 
 * Wikipeida
 
@@ -34,7 +34,7 @@ Demo
 
 ![Visual Selection Demo](http://i.minus.com/ibyU9aYE4tcFs6.gif)
 
-![Defualt Search Demo](http://i.minus.com/ibk6UbFKFTZAtB.gif)
+![Default Search Demo](http://i.minus.com/ibk6UbFKFTZAtB.gif)
 
 CONFIGURATION
 -------------
@@ -106,6 +106,9 @@ Credits
 
 - http://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
   Peter Rodding aka 'xolox' provided function to capture visual selection
+
+- http://patorjk.com/
+  ASCII font in help file generated courtesy of Patrick Gillespie 
 
 - https://github.com/g3orge/vim-voogle
   George Papanikolaou aka 'g3orge' similar project that helped me when I get the idea

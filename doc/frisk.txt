@@ -31,7 +31,7 @@
 ==============================================================================
 1. *OVERVIEW*                                                      *FriskOverview*
 
-Frisk is a web search launcher compatible with Windows, OSX, and Linux. With
+Frisk is a web search launcher compatible with Windows, OS X, and Linux. With
 Frisk within Vim you can choose a search engine, and enter your search terms
 without having to leave Vim. Upon accepting a search your default browser will
 open with the results.
@@ -108,7 +108,7 @@ You might see how another search engine could easily be integrated into Frisk.
 ==============================================================================
 6. *CHANGE_LOG*                                                   *FriskChangeLog*
 
-07 Jul 2013 - fixed bug on OS X terminal using xdg-open ratner than open
+07 Jul 2013 - fixed bug on OS X terminal using xdg-open rather than open
 06 Jul 2013 - added support for default engine and disabling engines
 14 Jun 2013 - added support for searching visual selection 
 10 Jun 2013 - added URL encoding 13 Jun 2013 -fixed URL encoding bug
@@ -129,6 +129,9 @@ Sources and credits for the plugin
 
 - http://patorjk.com/
   ASCII font courtesy of Patrick Gillespie 
+
+- https://github.com/g3orge/vim-voogle
+  George Papanikolaou aka 'g3orge' similar project that helped me when I get the idea
 
 ==============================================================================
 8. *LICENSE*                                                       *FriskLicenece*
