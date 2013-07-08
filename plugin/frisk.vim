@@ -231,7 +231,6 @@ function! s:Search(engineString,query)
         "check for Zsh
         redir => s:hasZsh | set shell? | redir END
         "if Zsh is being used escape the engineString
-        echom "[".matchstr(s:hasZsh, "zsh")."] this is the match"
         if matchstr(s:hasZsh, "zsh")  == "zsh" 
             let eng = substitute(eng, '\(.\)' , '\\\1' , 'g')
         endif 
