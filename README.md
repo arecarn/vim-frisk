@@ -58,7 +58,7 @@ Possible values:
 
 Installation
 -------------
-Use your favorite addon manager.
+Use your favorite plugin manager.
 * [Neobundle](https://github.com/Shougo/neobundle.vim) <-- I use this one
 * [Vundle](https://github.com/gmarik/vundle)
 * [pathogen](https://github.com/tpope/vim-pathogen)

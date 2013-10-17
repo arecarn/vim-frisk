@@ -1,228 +1,158 @@
-"=============================================================================
-"Header                                                                    {{{
-"=============================================================================
-""A cross platform compatible (Windows/Linux/OSX) plugin that facilitates
-"entering a search terms and opening web browsers 
-"Last Change: 08 Jul 2013
-"Maintainer: Ryan Carney arecarn@gmail.com
-"License:        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-"                           Version 2, December 2004
-"
-"               Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
-"
-"      Everyone is permitted to copy and distribute verbatim or modified
-"     copies of this license document, and changing it is allowed as long
-"                           as the name is changed.
-"
-"                 DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
-"       TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-"
-"                   0. You just DO WHAT THE FUCK YOU WANT TO
+" Script settings                                                            {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let save_cpo = &cpo   " allow line continuation
+set cpo&vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+"Debug Resources                                                             {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let s:debug = 0
 
-"==========================================================================}}}
-" Search Engines                                                            {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" s:PrintDebugHeader()                                                       {{{ 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:PrintDebugHeader(text)
+    if s:debug
+        echom repeat(' ', 80)
+        echom repeat('=', 80)
+        echom a:text." Debug"
+        echom repeat('-', 80)
+    endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:PrintDebugMsg()                                                          {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:PrintDebugMsg(text)
+    if s:debug
+        echom a:text
+    endif
+endfunction
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}}}}}
+" Search Engines                                                             {{{
 " the is where all the search engine objects are defined
-"=============================================================================
-"Search is list to store
-let s:searchlist=[]
-let g:frisk_default_engine = 'Google'
-"Bing{{{2
-let g:frisk_bing_enable = 1
-if g:frisk_bing_enable == 1
-    let s:bing = {
-                \'name' : 'bing', 
-                \'types':{
-                \'video' : 'http://www.bing.com/video/search?q=',
-                \'images' : 'http://www.bing.com/images/search?q=',
-                \'web': 'http://www.bing.com/search?q='}}
-    call add(s:searchlist, s:bing)
-endif
-"}}}2
-"IMDb {{{2
-let g:frisk_imdb_enable = 1
-if g:frisk_imdb_enable == 1
-    let s:imdb={
-                \'name' : 'imdb',
-                \'types':{
-                \'information' : 'http://www.imdb.com/find?q='}}
-    call add(s:searchlist, s:imdb)
-endif
-"}}}2
-"Google {{{2
-let g:frisk_google_enable  =  1
-if g:frisk_google_enable  ==  1
-    let s:google = {
-                \'name':'google', 
-                \'types':{
-                \'images' : 'http://images.google.com/images?q=',
-                \'translate' : 'http://translate.google.com/\#auto/en/',
-                \'web' : 'https://www.google.com/search?q=' }}
-    call add(s:searchlist, s:google)
-endif
-"}}}2
-"Stack Overflow {{{2
-let g:frisk_stackoverflow_enable = 1
-if g:frisk_stackoverflow_enable == 1
-    let s:stackoverflow={
-                \'name' : 'stack overflow',
-                \'types':{
-                \'information' : 'http://stackoverflow.com/search?q='}}
-    call add(s:searchlist, s:stackoverflow)
-endif
-"}}}2
-"Wikipedia {{{2
-let g:frisk_wikipedia_enable  =  1
-if g:frisk_wikipedia_enable  ==  1
-    let s:wikipedia = {
-                \'name' : 'wikipedia',
-                \'types': {
-                \'information' : 'http://en.wikipedia.org/w/index.php?search='}} 
-    call add(s:searchlist, s:wikipedia)
-endif
-"}}}2
-"Wolfram Alpha {{{2
-let g:frisk_wolframalpha_enable  =  1
-if g:frisk_wolframalpha_enable  ==  1
-    let s:wolframalpha = {
-                \'name' : 'wolfram alpha',
-                \'types':{
-                \'information' : 'http://www.wolframalpha.com/input/?i='}}
-    call add(s:searchlist, s:wolframalpha)
-    "echom string(search)
-endif 
-" }}}2
-"==========================================================================}}}
-" s:Setdefualtengine                                                        {{{ 
-" set the default search engine based on the value of g:frisk_default_engine
-"=============================================================================
-function! s:SetDefualtEngine()
-    if g:frisk_default_engine ==? 'bing images'
-        let s:default_engine = s:bing.types.images
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let s:searchEngine = ''
+let s:engine = {}
+let s:engine.bing            = 'http://www.bing.com/search?q='
+let s:engine.bingVideo       = 'http://www.bing.com/video/search?q='
+let s:engine.bingImage       = 'http://www.bing.com/images/search?q='
+let s:engine.imdb            = 'http://www.imdb.com/find?q='
+let s:engine.google          = 'https://www.google.com/search?q='
+let s:engine.googleImage     = 'http://images.google.com/images?q='
+let s:engine.googleTranslate = 'http://translate.google.com/\#auto/en/'
+let s:engine.stackOverflow   = 'http://stackoverflow.com/search?q='
+let s:engine.wikipedia       = 'http://en.wikipedia.org/w/index.php?search='
+let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 
-    elseif g:frisk_default_engine ==? 'bing' 
-        let s:default_engine = s:bing.types.web
 
-    elseif g:frisk_default_engine ==? 'bing video' 
-        let s:default_engine = s:bing.types.video
 
-    elseif g:frisk_default_engine ==? 'imdb' 
-        let s:default_engine = s:imdb.types.information
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:Frisk()                                                                  {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:Frisk(input) range
+    call s:PrintDebugHeader('Frisk')
+    call s:PrintDebugMsg('The input is =['.a:input.']')
+    let input = a:input
 
-    elseif g:frisk_default_engine ==? 'google' 
-        let s:default_engine = s:google.types.web
+    let s:defualtEngine = s:engine.google
 
-    elseif g:frisk_default_engine ==? 'google images' 
-        let s:default_engine = s:google.types.images
+    let arg = s:GetArg(input)
+    let input = s:RemoveArg(input)
+    let searchString = s:GetSearchString(input)
 
-    elseif g:frisk_default_engine ==? 'google translate' 
-        let s:default_engine = s:google.types.translate
-
-    elseif g:frisk_default_engine ==? 'stack overflow' 
-        let s:default_engine = s:stackoverflow.types.information
-
-    elseif g:frisk_default_engine ==? 'wikipedia' 
-        let s:default_engine = s:wikipedia.types.information
-
-    elseif  g:frisk_default_engine ==? 'wolfram alpha'
-        let s:default_engine = s:wolframalpha.types.information
+    if searchString =~# '^\s*$'
+        let searchString = s:GetVisualSearchString(a:firstline, a:lastline)
     endif 
-endfunction
 
-"==========================================================================}}}
-" s:BuildEngineList()                                                         {{{
-" combine all the search engines into one list
-"=============================================================================
-function! s:BuildEngineList()
-    let i = 1
-    let list = [] 
-    for eng in s:searchlist
-        call add(list, string(i) . ". " . eng.name)
-        "echom string(list)
-        let i = i + 1 
-    endfor
-    return list
-endfunction
 
-"==========================================================================}}}
-" s:PromptEngine(list)                                                           {{{
-" prompt the user to choose one of the 
-"=============================================================================
-function! s:PromptEngine(list)
-    redraw
-    "prompt the user for their search engine of choice
-    let engineName = inputlist(a:list) 
-    "return if invalid range
-    let engineName = engineName -1
-    let engine_choices_length = len(a:list) 
-    if engineName < engine_choices_length  && engineName >= 0 
-    else
-        return
-    endif 
-    return engineName 
-    "returns a number in the search list
-endfunction
-
-"==========================================================================}}}
-" s:PromptEngineOptions(engineName)                                          {{{
-" prompt the user for different options for thier search engine
-" if there is only one option for the search then defualt to it. 
-"=============================================================================
-function! s:PromptEngineOptions(engineName)
-    redraw
-    if len(keys(s:searchlist[a:engineName].types)) > 1 
-        let type_choices = ''
-        for type in keys(s:searchlist[a:engineName].types)
-            let type_choices = type_choices . '&' . type . "\n"
-            "echom type_choices
-        endfor
-        " confirm returns 1 and greater so decrement once for list indexing
-        let type_choice = confirm("Choose Your Search Type: ", type_choices, 1) - 1
+    if arg !~# '^\s*$'
+        if has_key(s:engine, arg) 
+            let s:searchEngine = get(s:engine, arg)
+            call s:PrintDebugMsg('The search Engine =['.s:searchEngine.']')
+        else 
+            throw 'bad key dawg'
+        endif
     else 
-        let type_choice = 0
-    endif 
+        let s:searchEngine = s:defualtEngine
+        call s:PrintDebugMsg('Using defualt search Engine =['.s:searchEngine.']')
+    endif
 
-    let type_keys = keys(s:searchlist[a:engineName].types)
-    "echom type_keys
-    let type_key = type_keys[type_choice]
-    "echom type_key
-    let engineString = s:searchlist[a:engineName].types[type_key]
-    return engineString
+    call s:Search(s:searchEngine, searchString)
 endfunction
 
-"==========================================================================}}}
-" s:GetSearchTerms(line1, line2)                                                          {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetArg()                                                                 {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:GetArg(input)
+    "test if there is an arg
+    let arg = matchstr( a:input, '\C\v^\s*-\zs\a+\ze(\s+|$)')
+    call s:PrintDebugMsg('The search engine name is =['.arg.']')
+    return arg
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:RemoveArg()                                                              {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:RemoveArg(input)
+    "remove arg
+    return substitute( a:input, '\C\v^\s*\zs-\a+\ze(\s+|$)', '', 'g')
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetSearchString()                                                        {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:GetSearchString(input)
+    "extract the search string
+    let searchString = matchstr( a:input, '\v\C^(\s*-\a+\s+)?\s*\zs.*$')
+    call s:PrintDebugMsg('The search string is =['.searchString.']')
+    return searchString
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetVisualSearchString()                                                  {{{
 " Determine if a visual selection was given or if the user needs to be
 " prompted for input
-"=============================================================================
-function! s:GetSearchTerms(line1, line2)
-    redraw
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:GetVisualSearchString(line1, line2)
     let lineNum = line('$')
-    "echo lineNum . "= number of lines in the file"
+    call s:PrintDebugMsg(lineNum . "= number of lines in the file")
     if (lineNum - 1) > (a:line2 - a:line1) "TODO if line = 1 in file
         let SearchTerms = s:get_visual_selection()
     else
-        call inputsave()
-        let SearchTerms = input('What Do You Want To Search: ')
-        call inputrestore()
+        let SearchTerms =''
     endif
-    "echo SearchTerms
+    call s:PrintDebugMsg('['.SearchTerms.'] = search terms from slection')
     return SearchTerms
 endfunction
 
-"==========================================================================}}}
-" s:Search(engineString, query)                                                                  {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+"s:get_visual_selection()                                                    {{{
+"Credit: Peter Rodding http://peterodding.com/code/ returns the visual
+"selection
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:get_visual_selection()
+    " Why is this not a built-in Vim script function?!
+    let [lnum1, col1] = getpos("'<")[1:2] 
+    let [lnum2, col2] = getpos("'>")[1:2] 
+    let lines = getline(lnum1, lnum2) 
+    let lines[-1] = lines[-1][: col2 - (&selection "" 'inclusive' ? 1 : 2)] 
+    let lines[0] = lines[0][col1 - 1:] 
+    return join(lines, "\n") 
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:Search()                                                                 {{{
 " execute the search and open the browser
-"=============================================================================
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:Search(engineString,query)
-    "TODO should input be bundled into a function?
-    "ask the user what they would like to search 
+    call s:PrintDebugHeader('s:Search')
 
     let eng = a:engineString
     let q = a:query
     let q = s:EncodeSerch(q)
     "build the search string and call the external program 
     let q = substitute(q, ' ', "+", "g")
-    "echo '[' q . ']= the search term'
+    call s:PrintDebugMsg('['.q.']= the search term')
 
     if  has("win16") || has("win32") || has("win64")
         exe 'silent! ! start /min ' . eng . q
@@ -231,7 +161,6 @@ function! s:Search(engineString,query)
         "check for Zsh
         redir => s:hasZsh | set shell? | redir END
         "if Zsh is being used escape the engineString
-        echom "[".matchstr(s:hasZsh, "zsh")."] this is the match"
         if matchstr(s:hasZsh, "zsh")  == "zsh" 
             let eng = substitute(eng, '\(.\)' , '\\\1' , 'g')
         endif 
@@ -246,63 +175,39 @@ function! s:Search(engineString,query)
     endif
 endfunction
 
-"==========================================================================}}}
-" s:EncodeSearch(q)                                                            {{{
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+"Commands                                                                    {{{
+"if a command :FriskList or :Frisk already mapped then the command won't be
+"remapped
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+command! -nargs=* -range=% -complete=custom,s:EngCompletion Frisk 
+            \<line1>,<line2> call s:Frisk('<args>')
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:EncodeSearch()                                                           {{{
 " encode the search so non reserved charactes can be used in searches.
 " http://webdesign.about.com/library/bl_url_encoding_table.htm
-"=============================================================================
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:EncodeSerch(q)
-    "echo a:q
+    call s:PrintDebugHeader('EncodeSerch()')
+    call s:PrintDebugMsg('['.a:q.']=the string to be searched')
     let list = split(a:q,'\zs')
-    "echo list 
+    " call s:PrintDebugMsg('['.string(list).']=the list of character in the seach')
     let hexList=[] 
     for char in list
+    " call s:PrintDebugMsg('['.char.']=char before hex encoding')
         let char = substitute(char, '.', '\=printf("%02X",char2nr(submatch(0)))', '')
         let char =  '\%' . char
         call add(hexList, char)
-        "echo char 
+    " call s:PrintDebugMsg('['.char.']=char after hex encoding')
     endfor
     return join(hexList,"")
 endfunction
 
-"==========================================================================}}}
-" s:get_visual_selection()                                                    {{{
-" Credit: Peter Rodding http://peterodding.com/code/ 
-" returns the visual selection 
-"=============================================================================
-function! s:get_visual_selection()
-    " Why is this not a built-in Vim script function?!
-    let [lnum1, col1] = getpos("'<")[1:2]
-    let [lnum2, col2] = getpos("'>")[1:2]
-    let lines = getline(lnum1, lnum2)
-    let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-    let lines[0] = lines[0][col1 - 1:]
-    return join(lines, "\n")
-endfunction
-"==========================================================================}}}
-" Frisk(lineone, linetwo, search_string)                                                                   {{{
-" The top level function 
-"=============================================================================
-function! Frisk(lineone, linetwo, search_string)
-    let EngineList = s:BuildEngineList() 
-    if a:search_string == ''
-        let Engine = s:PromptEngine(EngineList)
-        let EngineOptions = s:PromptEngineOptions(Engine)
-        let query = s:GetSearchTerms(a:lineone, a:linetwo)
-        call s:Search(EngineOptions,query)
-    else
-        call s:SetDefualtEngine()
-        call s:Search(s:default_engine, a:search_string)
-    endif 
-endfunction
-"==========================================================================}}}
-" Command                                                                  {{{
-" if a command :Frisk already mapped then the command won't be remapped 
-"=============================================================================
-if !hasmapto(':Frisk')
-    command! -nargs=* -range=% Frisk call Frisk(<line1>,<line2>,'<args>')
-endif
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+"Restore settings                                                            {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let &cpo = save_cpo
 
-"==========================================================================}}}
-"Note functions that take a range of the whole file go the top of the file (or
-"slelection) during execution 
+" vim: foldmethod=marker

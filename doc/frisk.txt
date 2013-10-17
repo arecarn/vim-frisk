@@ -1,5 +1,9 @@
 *frisk.txt* Compose a Internet search from within Vim
 *frisk*
+______________________________________________________________________________
+*------------------------------------------------------------------------------*
+==============================================================================
+|oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|
            ___         ___                       ___           ___     
           /  /\       /  /\        ___          /  /\         /__/|    
          /  / /_     /  /  \      /  /\        /  / /_       |  | |    
@@ -11,6 +15,10 @@
         \  \ \      \  \ \          /__/ /    \__\/ / /     \  \ \     
          \  \ \      \  \ \         \__\/       /__/ /       \  \ \    
           \__\/       \__\/                     \__\/         \__\/    
+|oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|
+==============================================================================
+*------------------------------------------------------------------------------*
+______________________________________________________________________________
 
    A Vim plugin that launches your browser with a specified search engine.
 
@@ -151,4 +159,4 @@ Sources and credits for the plugin
                    0. You just DO WHAT THE FUCK YOU WANT TO
                                                                               
 ==============================================================================
-vim:tw=78:sw=4:ft=help:norl:set 
+vim:tw=78:sw=4:ft=help:norl:fdm=manual:
