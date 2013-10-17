@@ -1,9 +1,9 @@
 let  s:debug = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" crunch#debug#PrintHeader()                                                       {{{ 
+" frisk#debug#PrintHeader()                                                       {{{ 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! crunch#debug#PrintHeader(text)
+function! frisk#debug#PrintHeader(text)
     if s:debug
         echom repeat(' ', 80)
         echom repeat('=', 80)
@@ -13,9 +13,9 @@ function! crunch#debug#PrintHeader(text)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" crunch#debug#PrintMsg()                                                          {{{
+" frisk#debug#PrintMsg()                                                          {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! crunch#debug#PrintMsg(text)
+function! frisk#debug#PrintMsg(text)
     if s:debug
         echom a:text
     endif
@@ -23,7 +23,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " debug#Enable()                                                            {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! crunch#debug#Enable(enable)
+function! frisk#debug#Enable(enable)
     if a:enable
         let  s:debug = 1
     else

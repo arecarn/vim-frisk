@@ -32,8 +32,8 @@ let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 " s:Frisk()                                                                  {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:Frisk(input) range
-    call crunch#debug#PrintHeader('Frisk')
-    call crunch#debug#PrintMsg('The input is =['.a:input.']')
+    call frisk#debug#PrintHeader('Frisk')
+    call frisk#debug#PrintMsg('The input is =['.a:input.']')
     let input = a:input
 
     let s:defualtEngine = s:engine.google
@@ -50,13 +50,13 @@ function! s:Frisk(input) range
     if arg !~# '^\s*$'
         if has_key(s:engine, arg) 
             let s:searchEngine = get(s:engine, arg)
-            call crunch#debug#PrintMsg('The search Engine =['.s:searchEngine.']')
+            call frisk#debug#PrintMsg('The search Engine =['.s:searchEngine.']')
         else 
             throw 'bad key dawg'
         endif
     else 
         let s:searchEngine = s:defualtEngine
-        call crunch#debug#PrintMsg('Using defualt search Engine =['.s:searchEngine.']')
+        call frisk#debug#PrintMsg('Using defualt search Engine =['.s:searchEngine.']')
     endif
 
     call s:Search(s:searchEngine, searchString)
@@ -68,7 +68,7 @@ endfunction
 function! s:GetArg(input)
     "test if there is an arg
     let arg = matchstr( a:input, '\C\v^\s*-\zs\a+\ze(\s+|$)')
-    call crunch#debug#PrintMsg('The search engine name is =['.arg.']')
+    call frisk#debug#PrintMsg('The search engine name is =['.arg.']')
     return arg
 endfunction
 
@@ -86,7 +86,7 @@ endfunction
 function! s:GetSearchString(input)
     "extract the search string
     let searchString = matchstr( a:input, '\v\C^(\s*-\a+\s+)?\s*\zs.*$')
-    call crunch#debug#PrintMsg('The search string is =['.searchString.']')
+    call frisk#debug#PrintMsg('The search string is =['.searchString.']')
     return searchString
 endfunction
 
@@ -97,13 +97,13 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:GetVisualSearchString(line1, line2)
     let lineNum = line('$')
-    call crunch#debug#PrintMsg(lineNum . "= number of lines in the file")
+    call frisk#debug#PrintMsg(lineNum . "= number of lines in the file")
     if (lineNum - 1) > (a:line2 - a:line1) "TODO if line = 1 in file
         let SearchTerms = s:get_visual_selection()
     else
         let SearchTerms =''
     endif
-    call crunch#debug#PrintMsg('['.SearchTerms.'] = search terms from slection')
+    call frisk#debug#PrintMsg('['.SearchTerms.'] = search terms from slection')
     return SearchTerms
 endfunction
 
@@ -127,14 +127,14 @@ endfunction
 " execute the search and open the browser
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:Search(engineString,query)
-    call crunch#debug#PrintHeader('s:Search')
+    call frisk#debug#PrintHeader('s:Search')
 
     let eng = a:engineString
     let q = a:query
     let q = s:EncodeSerch(q)
     "build the search string and call the external program 
     let q = substitute(q, ' ', "+", "g")
-    call crunch#debug#PrintMsg('['.q.']= the search term')
+    call frisk#debug#PrintMsg('['.q.']= the search term')
 
     if  has("win16") || has("win32") || has("win64")
         exe 'silent! ! start /min ' . eng . q
@@ -172,17 +172,17 @@ command! -nargs=* -range=% -complete=custom,s:EngCompletion Frisk
 " http://webdesign.about.com/library/bl_url_encoding_table.htm
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:EncodeSerch(q)
-    call crunch#debug#PrintHeader('EncodeSerch()')
-    call crunch#debug#PrintMsg('['.a:q.']=the string to be searched')
+    call frisk#debug#PrintHeader('EncodeSerch()')
+    call frisk#debug#PrintMsg('['.a:q.']=the string to be searched')
     let list = split(a:q,'\zs')
-    " call crunch#debug#PrintMsg('['.string(list).']=the list of character in the seach')
+    " call frisk#debug#PrintMsg('['.string(list).']=the list of character in the seach')
     let hexList=[] 
     for char in list
-    " call crunch#debug#PrintMsg('['.char.']=char before hex encoding')
+    " call frisk#debug#PrintMsg('['.char.']=char before hex encoding')
         let char = substitute(char, '.', '\=printf("%02X",char2nr(submatch(0)))', '')
         let char =  '\%' . char
         call add(hexList, char)
-    " call crunch#debug#PrintMsg('['.char.']=char after hex encoding')
+    " call frisk#debug#PrintMsg('['.char.']=char after hex encoding')
     endfor
     return join(hexList,"")
 endfunction
