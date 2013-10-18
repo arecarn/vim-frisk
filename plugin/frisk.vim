@@ -165,6 +165,18 @@ endfunction
 command! -nargs=* -range=% -complete=custom,s:EngCompletion Frisk 
             \<line1>,<line2> call s:Frisk('<args>')
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:EngCompletion()                                                          {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:EngCompletion(ArgLead, CmdLine, CursorPos)
+    call s:PrintDebugHeader("EngCompletion Debug")
+
+    let completionOptions = '-'.join(keys(s:engine), "\n-")
+    call s:PrintDebugMsg('The completion options =['
+                \ .string(completionOptions).']')
+    return completionOptions
+endfunction
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:EncodeSearch()                                                           {{{
