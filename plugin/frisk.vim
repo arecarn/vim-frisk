@@ -169,10 +169,10 @@ command! -nargs=* -range=% -complete=custom,s:EngCompletion Frisk
 " s:EngCompletion()                                                          {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:EngCompletion(ArgLead, CmdLine, CursorPos)
-    call s:PrintDebugHeader("EngCompletion Debug")
+    call frisk#debug#PrintHeader("EngCompletion Debug")
 
     let completionOptions = '-'.join(keys(s:engine), "\n-")
-    call s:PrintDebugMsg('The completion options =['
+    call frisk#debug#PrintMsg('The completion options =['
                 \ .string(completionOptions).']')
     return completionOptions
 endfunction
