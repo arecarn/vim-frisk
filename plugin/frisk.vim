@@ -158,27 +158,6 @@ function! s:Search(engineString,query)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-"Commands                                                                    {{{
-"if a command :FriskList or :Frisk already mapped then the command won't be
-"remapped
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -nargs=* -range=% -complete=custom,s:EngCompletion Frisk 
-            \<line1>,<line2> call s:Frisk('<args>')
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:EngCompletion()                                                          {{{
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:EngCompletion(ArgLead, CmdLine, CursorPos)
-    call frisk#debug#PrintHeader("EngCompletion Debug")
-
-    let completionOptions = '-'.join(keys(s:engine), "\n-")
-    call frisk#debug#PrintMsg('The completion options =['
-                \ .string(completionOptions).']')
-    return completionOptions
-endfunction
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:EncodeSearch()                                                           {{{
 " encode the search so non reserved charactes can be used in searches.
 " http://webdesign.about.com/library/bl_url_encoding_table.htm
@@ -198,6 +177,27 @@ function! s:EncodeSerch(q)
     endfor
     return join(hexList,"")
 endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+"Commands                                                                    {{{
+"if a command :FriskList or :Frisk already mapped then the command won't be
+"remapped
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+command! -nargs=* -range=% -complete=custom,s:EngCompletion Frisk 
+            \<line1>,<line2> call s:Frisk('<args>')
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:EngCompletion()                                                          {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:EngCompletion(ArgLead, CmdLine, CursorPos)
+    call frisk#debug#PrintHeader("EngCompletion Debug")
+
+    let completionOptions = '-'.join(keys(s:engine), "\n-")
+    call frisk#debug#PrintMsg('The completion options =['
+                \ .string(completionOptions).']')
+    return completionOptions
+endfunction
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 "Restore settings                                                            {{{
