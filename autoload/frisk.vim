@@ -20,6 +20,7 @@ let s:engine.stackOverflow   = 'http://stackoverflow.com/search?q='
 let s:engine.wikipedia       = 'http://en.wikipedia.org/w/index.php?search='
 let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 
+let s:defualtEngine = ''
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -30,7 +31,10 @@ function! frisk#Main(input) range
     call frisk#debug#PrintMsg('The input is =['.a:input.']')
     let input = a:input
 
-    let s:defualtEngine = s:engine.google
+    if s:defualtEngine == ''
+        let s:defualtEngine = s:engine.google
+    endif
+
 
     let arg = s:GetArg(input)
     let input = s:RemoveArg(input)
@@ -175,10 +179,10 @@ function! s:EncodeSerch(q)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" frisk#EngCompletion()                                                          {{{
+" frisk#SwitchCompletion()                                                      {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! frisk#EngCompletion(ArgLead, CmdLine, CursorPos)
-    call frisk#debug#PrintHeader("EngCompletion Debug")
+function! frisk#SwitchCompletion(ArgLead, CmdLine, CursorPos)
+    call frisk#debug#PrintHeader("SwitchCompletion Debug")
 
     let completionOptions = '-'.join(keys(s:engine), "\n-")
     call frisk#debug#PrintMsg('The completion options =['
@@ -192,6 +196,14 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#AddEngine(name, url)
     let s:engine[a:name] = a:url
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" frisk#AddEngine()
+" add a custom search engine to the list
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! frisk#DefaultEngine(name)
+    let s:defualtEngine = s:engine[a:name]
 endfunction
 
 " vim:foldmethod=marker

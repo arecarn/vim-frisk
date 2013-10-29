@@ -14,7 +14,7 @@ let g:loaded_frisk = 1
 "if a command :FriskList or :Frisk already mapped then the command won't be
 "remapped
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -nargs=* -range=% -complete=custom,frisk#EngCompletion Frisk 
+command! -nargs=* -range=% -complete=custom,frisk#SwitchCompletion Frisk 
             \ <line1>,<line2> call frisk#Main(<q-args>)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}

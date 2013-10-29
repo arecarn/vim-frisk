@@ -17,19 +17,20 @@ ______________________________________________________________________________
 ==============================================================================
 *CONTENTS*
 
-     1. Overview .................................... |FriskOverview|
-     2. Usage ....................................... |FriskUsage|
-     3. Configuration ............................... |FriskConfiguration|
-        3.1 g:frisk_default_engine................... |FriskDefaultEngine| 
-     4. Known Issues ................................ |FriskKnownIssues|
-     5. Contribute .................................. |FriskContribute|
-        5.1 Custom Search Engine .................... |FriskCustomEngine||
-     6. Change Log .................................. |FriskChangeLog|
-     7. Credits ..................................... |FriskCredits|
-     8. Licenece .................................... |FriskLicenece|
+     1. Overview .................................... |frisk-overview|
+     2. Usage ....................................... |frisk-usage|
+     3. Configuration ............................... |frisk-configuration|
+        3.1 Custom Search Engine .................... |frisk-custom-engine| 
+        3.2 Default Search Engine ................... |frisk-default-engine| 
+     4. Known Issues ................................ |frisk-known-issues|
+     5. Contribute .................................. |frisk-contribute|
+        5.1 Custom Search Engine .................... |frisk-custom-engine||
+     6. Change Log .................................. |frisk-change-log|
+     7. Credits ..................................... |frisk-credits|
+     8. License ..................................... |frisk-licenece|
 
 ==============================================================================
-1. *OVERVIEW*                                                      *FriskOverview*
+1.  Overview                                                   *frisk-overview*
 
 Frisk is a web search launcher compatible with Windows, OS X, and Linux. With
 Frisk within Vim you can choose a search engine, and enter your search terms
@@ -45,11 +46,11 @@ Supported search engines:
 * Wikipeida
 
 ==============================================================================
-2. *USAGE*                                                            *FriskUsage*
+2.  Usage                                                         *frisk-usage*
 
-:Frisk [engine] [search_terms]<CR>  
+:Frisk [engine] [search-terms]<CR>  
 
-Executes a search with using [search_terms] as the query.  The [engine]
+Executes a search with using [search-terms] as the query.  The [engine]
 argument is optional and selects the search engine to to use.  When left out,
 the |defualt-engine| is used.
 
@@ -61,53 +62,68 @@ argument is optional and selects the search engine to to use.  When left out,
 the |defualt-engine| is used.
 
 ==============================================================================
-3. *CONFIGURATION*                                            *FriskConfiguration*
-
+3.  Configuration                                         *frisk-configuration*
 
 ------------------------------------------------------------------------------
-3.1 g:frisk_default_engine                                  *FriskDefaultEngine*
+3.1 Custom Search Engine                                  *frisk-custom-engine*
 
-TODO 
+Using the function frisk#AddEngine(name, url) you can add your own custom
+search engines
 
-The Defualt search engine used is Google, but this can be configured with the 
-???? command using one of the following arguments:
+Example: Adding Yahoo Search~
+call frisk#AddEngine('yahoo', 'http://search.yahoo.com/search?p=')
 
- "-bingImages"
- "-bing" 
- "-bingVideo" 
- "-imdb" 
- "-google" 
- "-googleImages" 
- "-googleTranslate" 
- "-stackOverflow" 
- "-wikipedia" 
- "-wolframAlpha"
+After calling this function you can search with yahoo as follows:
 
-3.2 Adding Your Own Search Engine                            *FriskCustomEngine*
+Frisk: -yahoo [search-terms]
 
-TODO
+------------------------------------------------------------------------------
+3.2 Default Search Engine                                *frisk-default-engine*
+
+The default search engine used is Google, but this can be configured with the 
+frisk#DefaultEngine() function.
+
+Example: Make bing the default engine~
+frisk#DefaultEngine('bing')
+
+Possible arguments to use with this function are as follows:
+ "bingImages"
+ "bing" 
+ "bingVideo" 
+ "imdb" 
+ "google" 
+ "googleImages" 
+ "googleTranslate" 
+ "stackOverflow" 
+ "wikipedia" 
+ "wolframAlpha"
+
+Note: The default engine can be set to custom search engine if it is
+initialized before the default 
+
+Example: Adding yahoo engine then setting it to the default~
+
+call frisk#AddEngine('yahoo', 'http://search.yahoo.com/search?p=')
+frisk#DefaultEngine('yahoo')
 
 ==============================================================================
-4. *KNOWN_ISSUES*                                               *FriskKnownIssues*
+4.  Known Issues                                           *frisk-known-issues*
 
-- Can't make visual selection on a buffer with only 1 line 
+- Can't search visual selection on a buffer with only 1 line 
 
 https://github.com/arecarn/frisk/issues?state=open
                                                            
 ==============================================================================
-5. *CONTRIBUTE*                                                  *FriskContribute*
+5.  Contribute                                               *frisk-contribute*
 
-I'm pretty new to Vim Script so any tips are appreciated. Think you can make
-Frisk better? Fork it on GitHub and send a pull request. If you find bugs,
-want new functionality, or would like another search engine added contact me
-by making an issue on GitHub and I'll see what I can do. 
-
+Repository and Bug Tracker:
 https://github.com/arecarn/frisk
 
 ==============================================================================
-6. *CHANGE_LOG*                                                   *FriskChangeLog*
+6.  Change Log                                               *frisk-change-log*
 
-TODO
+TODO: update me
+
 08 Jul 2013 - added support for Zsh for mac and linux
 07 Jul 2013 - fixed bug on OS X terminal using xdg-open rather than open
 06 Jul 2013 - added support for default engine and disabling engines
@@ -115,7 +131,7 @@ TODO
 10 Jun 2013 - added URL encoding 13 Jun 2013 -fixed URL encoding bug
 
 ==============================================================================
-7. *CREDITS*                                                        *FriskCredits*
+7.  Credits                                                     *frisk-credits*
 
 Sources and credits for the plugin
 
@@ -132,10 +148,11 @@ Sources and credits for the plugin
   ASCII font courtesy of Patrick Gillespie 
 
 - https://github.com/g3orge/vim-voogle
-  George Papanikolaou aka 'g3orge' similar project that helped me when I get the idea
+  George Papanikolaou aka 'g3orge' project voogle was a similar project that 
+  helped me get a start
 
 ==============================================================================
-8. *LICENSE*                                                       *FriskLicenece*
+8.  License                                                     *frisk-license*
 
       DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE Version 2, December 2004
  
