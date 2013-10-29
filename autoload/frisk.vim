@@ -7,8 +7,10 @@ set cpo&vim
 " Search Engines                                                             {{{
 " the is where all the search engine objects are defined
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let s:defualtEngine = ''
 let s:searchEngine = ''
 let s:engine = {}
+
 let s:engine.bing            = 'http://www.bing.com/search?q='
 let s:engine.bingVideo       = 'http://www.bing.com/video/search?q='
 let s:engine.bingImage       = 'http://www.bing.com/images/search?q='
@@ -19,8 +21,6 @@ let s:engine.googleTranslate = 'http://translate.google.com/\#auto/en/'
 let s:engine.stackOverflow   = 'http://stackoverflow.com/search?q='
 let s:engine.wikipedia       = 'http://en.wikipedia.org/w/index.php?search='
 let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
-
-let s:defualtEngine = ''
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
