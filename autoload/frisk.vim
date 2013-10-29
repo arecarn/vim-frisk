@@ -127,17 +127,26 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:Search(engineString,query)
     call frisk#debug#PrintHeader('s:Search')
-
     let eng = a:engineString
-    let q = a:query
-    call frisk#debug#PrintMsg('['.q.']= the search term before encoding')
-    let q = s:EncodeSerch(q)
-    "build the search string and call the external program 
-    let q = substitute(q, ' ', "+", "g")
-    call frisk#debug#PrintMsg('['.q.']= the search term')
+    let query = a:query
+
+    let urlRegex = '\v(ht|f)tp:\/\/.*(\s\+|$)'
+
+    if query !~ urlRegex 
+        call frisk#debug#PrintMsg('['.query.']= the search term before encoding')
+        let query = s:EncodeSerch(query)
+
+        " "build the search string and call the external program 
+        " let query = substitute(query, ' ', "+", "g")
+
+        call frisk#debug#PrintMsg('['.query.']= the search term')
+    else
+        call frisk#debug#PrintMsg('Opening as URL')
+        let eng = ''
+    endif 
 
     if  has("win16") || has("win32") || has("win64")
-        exe 'silent! ! start /min ' . eng . q
+        exe 'silent! ! start /min ' . eng . query
     elseif has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n" || has("unix")
 
         "check for Zsh
@@ -148,9 +157,9 @@ function! s:Search(engineString,query)
         endif 
 
         if has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n"
-            exe '!open ' . eng . q
+            exe '!open ' . eng . query
         elseif has("unix")
-            exe '!xdg-open ' . eng . q . "&" 
+            exe '!xdg-open ' . eng . query . "&" 
             "note that a "&" has to follow the search query for some reason
         endif
 
