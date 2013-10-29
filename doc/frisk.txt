@@ -1,26 +1,18 @@
 *frisk.txt* Compose a Internet search from within Vim
 *frisk*
 ______________________________________________________________________________
-*------------------------------------------------------------------------------*
-==============================================================================
-|oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|
-           ___         ___                       ___           ___     
-          /  /\       /  /\        ___          /  /\         /__/|    
-         /  / /_     /  /  \      /  /\        /  / /_       |  | |    
-        /  / / /\   /  / /\ \    /  / /       /  / / /\      |  | |    
-       /  / / / /  /  / /-/ /   /__/  \      /  / / /  \   __|  | |    
-      /__/ / / /  /__/ / / /___ \__\/\ \__  /__/ / / /\ \ /__/\_| |____
-      \  \ \/ /   \  \ \/     /    \  \ \/\ \  \ \/ /-/ / \  \ \/     /
-       \  \  /     \  \  /----      \__\  /  \  \  / / /   \  \  /---- 
-        \  \ \      \  \ \          /__/ /    \__\/ / /     \  \ \     
-         \  \ \      \  \ \         \__\/       /__/ /       \  \ \    
-          \__\/       \__\/                     \__\/         \__\/    
-|oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|
-==============================================================================
-*------------------------------------------------------------------------------*
+           ___         ___                       ___           ___     ~
+          /  /\       /  /\        ___          /  /\         /__/|    ~
+         /  / /_     /  /  \      /  /\        /  / /_       |  | |    ~
+        /  / / /\   /  / /\ \    /  / /       /  / / /\      |  | |    ~
+       /  / / / /  /  / /-/ /   /__/  \      /  / / /  \   __|  | |    ~
+      /__/ / / /  /__/ / / /___ \__\/\ \__  /__/ / / /\ \ /__/\_| |____~
+      \  \ \/ /   \  \ \/     /    \  \ \/\ \  \ \/ /-/ / \  \ \/     /~
+       \  \  /     \  \  /----      \__\  /  \  \  / / /   \  \  /---- ~
+        \  \ \      \  \ \          /__/ /    \__\/ / /     \  \ \     ~
+         \  \ \      \  \ \         \__\/       /__/ /       \  \ \    ~
+          \__\/       \__\/                     \__\/         \__\/    ~
 ______________________________________________________________________________
-
-   A Vim plugin that launches your browser with a specified search engine.
 
 ==============================================================================
 *CONTENTS*
@@ -55,9 +47,18 @@ Supported search engines:
 ==============================================================================
 2. *USAGE*                                                            *FriskUsage*
 
-:Frisk<CR>
-:Frisk "search terms"<CR>  <-- uses the default search engine 
-:'<,'>Frisk<CR> <-- use visual selections instead of prompting for input
+:Frisk [engine] [search_terms]<CR>  
+
+Executes a search with using [search_terms] as the query.  The [engine]
+argument is optional and selects the search engine to to use.  When left out,
+the |defualt-engine| is used.
+
+
+:'<,'>Frisk [engine]<CR> 
+
+Executes a search with using a visual selection as the query. The [engine]
+argument is optional and selects the search engine to to use.  When left out,
+the |defualt-engine| is used.
 
 ==============================================================================
 3. *CONFIGURATION*                                            *FriskConfiguration*
@@ -66,26 +67,32 @@ Supported search engines:
 ------------------------------------------------------------------------------
 3.1 g:frisk_default_engine                                  *FriskDefaultEngine*
 
-Default = "google"
+TODO 
 
-Sets the default search engine for when Frisk is called with search terms
+The Defualt search engine used is Google, but this can be configured with the 
+???? command using one of the following arguments:
 
-Possible values:
- "bing images"
- "bing" 
- "bing video" 
- "imdb" 
- "google" 
- "google images" 
- "google translate" 
- "stack overflow" 
- "wikipedia" 
- "wolfram alpha"
+ "-bingImages"
+ "-bing" 
+ "-bingVideo" 
+ "-imdb" 
+ "-google" 
+ "-googleImages" 
+ "-googleTranslate" 
+ "-stackOverflow" 
+ "-wikipedia" 
+ "-wolframAlpha"
+
+3.2 Adding Your Own Search Engine                            *FriskCustomEngine*
+
+TODO
 
 ==============================================================================
 4. *KNOWN_ISSUES*                                               *FriskKnownIssues*
 
 - Can't make visual selection on a buffer with only 1 line 
+
+https://github.com/arecarn/frisk/issues?state=open
                                                            
 ==============================================================================
 5. *CONTRIBUTE*                                                  *FriskContribute*
@@ -97,25 +104,10 @@ by making an issue on GitHub and I'll see what I can do.
 
 https://github.com/arecarn/frisk
 
-------------------------------------------------------------------------------
-5.1 Adding Your Own Search Engine                            *FriskCustomEngine*
-
-Here's an example of how Bing Search engine information is stored in Frisk
-
-let g:Bing = {
-            \'name' : 'Bing', 
-            \'types':{
-            \'video' : 'http://www.bing.com/video/search?q=',
-            \'images' : 'http://www.bing.com/images/search?q=',
-            \'web': 'http://www.bing.com/search?q='}}
-call add(g:Search, Bing)
-
-You might see how another search engine could easily be integrated into Frisk.
-
-
 ==============================================================================
 6. *CHANGE_LOG*                                                   *FriskChangeLog*
 
+TODO
 08 Jul 2013 - added support for Zsh for mac and linux
 07 Jul 2013 - fixed bug on OS X terminal using xdg-open rather than open
 06 Jul 2013 - added support for default engine and disabling engines

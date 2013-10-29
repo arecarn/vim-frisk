@@ -32,7 +32,7 @@ let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 " s:Frisk()                                                                  {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:Frisk(input) range
-    call frisk#debug#PrintHeader('Frisk')
+    call frisk#debug#PrintHeader('Frisk()')
     call frisk#debug#PrintMsg('The input is =['.a:input.']')
     let input = a:input
 
@@ -42,8 +42,9 @@ function! s:Frisk(input) range
     let input = s:RemoveArg(input)
     let searchString = s:GetSearchString(input)
 
-    if searchString =~# '^\s*$'
+    if searchString =~ '^\s*$'
         let searchString = s:GetVisualSearchString(a:firstline, a:lastline)
+        call frisk#debug#PrintMsg('Visual search string =['.searchString.']')
     endif 
 
 
@@ -131,6 +132,7 @@ function! s:Search(engineString,query)
 
     let eng = a:engineString
     let q = a:query
+    call frisk#debug#PrintMsg('['.q.']= the search term before encoding')
     let q = s:EncodeSerch(q)
     "build the search string and call the external program 
     let q = substitute(q, ' ', "+", "g")
@@ -169,11 +171,11 @@ function! s:EncodeSerch(q)
     " call frisk#debug#PrintMsg('['.string(list).']=the list of character in the seach')
     let hexList=[] 
     for char in list
-    " call frisk#debug#PrintMsg('['.char.']=char before hex encoding')
+        " call frisk#debug#PrintMsg('['.char.']=char before hex encoding')
         let char = substitute(char, '.', '\=printf("%02X",char2nr(submatch(0)))', '')
         let char =  '\%' . char
         call add(hexList, char)
-    " call frisk#debug#PrintMsg('['.char.']=char after hex encoding')
+        " call frisk#debug#PrintMsg('['.char.']=char after hex encoding')
     endfor
     return join(hexList,"")
 endfunction
@@ -184,7 +186,7 @@ endfunction
 "remapped
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 command! -nargs=* -range=% -complete=custom,s:EngCompletion Frisk 
-            \<line1>,<line2> call s:Frisk('<args>')
+            \ <line1>,<line2> call s:Frisk(<q-args>)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:EngCompletion()                                                          {{{
