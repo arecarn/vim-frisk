@@ -8,9 +8,7 @@ set cpo&vim
 " the is where all the search engine objects are defined
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:defualtEngine = ''
-let s:searchEngine = ''
 let s:engine = {}
-
 let s:engine.bing            = 'http://www.bing.com/search?q='
 let s:engine.bingVideo       = 'http://www.bing.com/video/search?q='
 let s:engine.bingImage       = 'http://www.bing.com/images/search?q='
@@ -22,79 +20,94 @@ let s:engine.stackOverflow   = 'http://stackoverflow.com/search?q='
 let s:engine.wikipedia       = 'http://en.wikipedia.org/w/index.php?search='
 let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:Main()                                                                  {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#Main(input) range
     call frisk#debug#PrintHeader('Main()')
-    call frisk#debug#PrintMsg('The input is =['.a:input.']')
-    let input = a:input
-
-    if s:defualtEngine == ''
-        let s:defualtEngine = s:engine.google
-    endif
-
-
-    let arg = s:GetArg(input)
-    let input = s:RemoveArg(input)
-    let searchString = s:GetSearchString(input)
-
-    if searchString =~ '^\s*$'
-        let searchString = s:GetVisualSearchString(a:firstline, a:lastline)
-        call frisk#debug#PrintMsg('Visual search string =['.searchString.']')
-    endif 
-
-
-    if arg !~# '^\s*$'
-        if has_key(s:engine, arg) 
-            let s:searchEngine = get(s:engine, arg)
-            call frisk#debug#PrintMsg('The search Engine =['.s:searchEngine.']')
-        else 
-            throw 'bad key dawg'
-        endif
-    else 
-        let s:searchEngine = s:defualtEngine
-        call frisk#debug#PrintMsg('Using defualt search Engine =['.s:searchEngine.']')
-    endif
-
-    call s:Search(s:searchEngine, searchString)
+    let Engine = s:HandleArg(a:input)
+    let query = s:GetQuery(a:input, a:firstline, a:lastline)
+    let url = s:BuildURL(Engine, query)
+    call frisk#Open(url)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:GetArg()                                                                 {{{
+" s:HandleArg()                                                              {{{
+" If arguments are passed in set the search engine accordingly 
+" If not use the default search engine
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:GetArg(input)
-    "test if there is an arg
+function! s:HandleArg(input)
+    call frisk#debug#PrintMsg('The input is =['.a:input.']')
+    " if default engine isn't set to anything let it be google
+    if s:defualtEngine == ''
+        let s:defualtEngine = s:engine.google
+    endif
+    " extract the arguments if they exist
+    let arg = s:GetValidArg(a:input)
+    " determine search engine based on arguments from user
+    let Engine = s:DetermineEng(arg) 
+    call frisk#debug#PrintMsg('Eng =['.Engine.']')
+    return Engine 
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:DetermineEngine()                                                        {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:DetermineEng(arg) 
+    if a:arg =~# '^\s*$'   " no arguments found
+        let Engine = s:defualtEngine
+    else                " arguments found
+        if has_key(s:engine, a:arg) 
+            let Engine = get(s:engine, a:arg)
+        else 
+            throw 'Frisk Error:'. "No ". a:arg . " Found"  
+        endif
+    endif
+    return Engine
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetValidArg()                                                            {{{
+" test if there is an arg in the correct form.
+" return the arg if it's valid otherwise an empty string is returned
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:GetValidArg(input)
     let arg = matchstr( a:input, '\C\v^\s*-\zs\a+\ze(\s+|$)')
     call frisk#debug#PrintMsg('The search engine name is =['.arg.']')
     return arg
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetQuery()                                                        {{{
+" Remove the query from the users input
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:GetQuery(input, frstline, lstline)
+    "remove the arguments and return the query
+    let input = s:RemoveArg(a:input)
+    "extract the query
+    let query = matchstr( input, '\v\C^(\s*-\a+\s+)?\s*\zs.*$')
+    call frisk#debug#PrintMsg('The query is =['.query.']')
+    if query =~ '^\s*$' " if there is no match get visual selection
+        let query = s:GetVisualQuery(a:frstline, a:lstline)
+        call frisk#debug#PrintMsg('Visual query =['.query.']')
+    endif 
+    return query
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:RemoveArg()                                                              {{{
+" Remove the arguments from the users input using search an replace
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:RemoveArg(input)
-    "remove arg
     return substitute( a:input, '\C\v^\s*\zs-\a+\ze(\s+|$)', '', 'g')
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:GetSearchString()                                                        {{{
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:GetSearchString(input)
-    "extract the search string
-    let searchString = matchstr( a:input, '\v\C^(\s*-\a+\s+)?\s*\zs.*$')
-    call frisk#debug#PrintMsg('The search string is =['.searchString.']')
-    return searchString
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:GetVisualSearchString()                                                  {{{
+" s:GetVisualQuery()                                                  {{{
 " Determine if a visual selection was given or if the user needs to be
 " prompted for input
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:GetVisualSearchString(line1, line2)
+function! s:GetVisualQuery(line1, line2)
     let lineNum = line('$')
     call frisk#debug#PrintMsg(lineNum . "= number of lines in the file")
     if (lineNum - 1) > (a:line2 - a:line1) "TODO if line = 1 in file
@@ -122,47 +135,57 @@ function! s:get_visual_selection()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:Search()                                                                 {{{
+" s:BuildURL()                                                               {{{
 " execute the search and open the browser
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:Search(engineString,query)
-    call frisk#debug#PrintHeader('s:Search')
-    let eng = a:engineString
+function! s:BuildURL(eng, query)
+        call frisk#debug#PrintHeader('BuildURL')
+    let eng = a:eng
     let query = a:query
-
     let urlRegex = '\v(ht|f)tp:\/\/.*(\s\+|$)'
-
-    if query !~ urlRegex 
-        call frisk#debug#PrintMsg('['.query.']= the search term before encoding')
-        let query = s:EncodeSerch(query)
-
-        " "build the search string and call the external program 
-        " let query = substitute(query, ' ', "+", "g")
-
-        call frisk#debug#PrintMsg('['.query.']= the search term')
-    else
+    if query =~ urlRegex 
         call frisk#debug#PrintMsg('Opening as URL')
         let eng = ''
+    else
+        call frisk#debug#PrintMsg('['.query.']= the search term before encoding')
+        let query= s:EncodeSerch(query)
+        call frisk#debug#PrintMsg('['.query.']= the search term')
     endif 
+    " check for zsh and escape every character
+    if matchstr(&shell, "zsh")  == "zsh" 
+        let eng = substitute(eng , '\(.\)' , '\\\1' , 'g')
+    endif 
+    let url = eng.query
+        call frisk#debug#PrintMsg('['.url.']= url')
+    return url 
+endfunction
 
-    if  has("win16") || has("win32") || has("win64")
-        exe 'silent! ! start /min ' . eng . query
-    elseif has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n" || has("unix")
-
-        "check for Zsh
-        redir => s:hasZsh | set shell? | redir END
-        "if Zsh is being used escape the engineString
-        if matchstr(s:hasZsh, "zsh")  == "zsh" 
-            let eng = substitute(eng, '\(.\)' , '\\\1' , 'g')
-        endif 
-
-        if has("mac") || has ("macunix") || has("gui_mac") || system('uname') == "Darwin\n"
-            exe '!open ' . eng . query
-        elseif has("unix")
-            exe '!xdg-open ' . eng . query . "&" 
-            "note that a "&" has to follow the search query for some reason
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" frisk#Open()                                                                 {{{
+" execute the search and open the browser
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! frisk#Open(url)
+    call frisk#debug#PrintHeader('frisk#Open')
+    call frisk#debug#PrintMsg('['.a:url.']= the url to open')
+    if has("win32") || has("win64") "Windows
+        execute 'silent !cmd /c start /min ' . a:url
+        call frisk#debug#PrintMsg('opening with windows')
+    elseif has("unix") 
+        let os=substitute(system('uname'), '\n', '', '')
+        if os == 'Darwin' " Mac
+            call frisk#debug#PrintMsg('opening with mac')
+            execute 'silent !open ' . a:url
+        elseif os == 'Linux' " Linux
+            call frisk#debug#PrintMsg('opening with linux')
+            execute 'silent !xdg-open ' . a:url . "&" 
+        elseif has('win32unix') " Cygwin
+            call frisk#debug#PrintMsg('opening with cygwin')
+            execute 'silent !cmd /c start ' . a:url
+        else 
+            throw 'unknown system, please create a issue'
         endif
-
+    else
+        throw 'unknown system, please create a issue'
     endif
 endfunction
 
@@ -188,11 +211,12 @@ function! s:EncodeSerch(q)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" frisk#SwitchCompletion()                                                      {{{
+" frisk#SwitchCompletion()                                                   {{{
+" Access the keys for the engine list, and add a '-' in front of them then
+" return the list of completion items in a newline operated list.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#SwitchCompletion(ArgLead, CmdLine, CursorPos)
     call frisk#debug#PrintHeader("SwitchCompletion Debug")
-
     let completionOptions = '-'.join(keys(s:engine), "\n-")
     call frisk#debug#PrintMsg('The completion options =['
                 \ .string(completionOptions).']')
@@ -200,19 +224,20 @@ function! frisk#SwitchCompletion(ArgLead, CmdLine, CursorPos)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" frisk#AddEngine()
-" add a custom search engine to the list
+" frisk#AddEngine()                                                          {{{
+" add a custom search engine to the list of engines
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#AddEngine(name, url)
     let s:engine[a:name] = a:url
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" frisk#AddEngine()
-" add a custom search engine to the list
+" frisk#DefaultEngine()                                                      {{{
+" set the default search engine by name e.g. 'google' or 'stackOverFlow'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#DefaultEngine(name)
     let s:defualtEngine = s:engine[a:name]
 endfunction
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " vim:foldmethod=marker
