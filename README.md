@@ -8,80 +8,42 @@ Frisk within Vim you can choose a search engine, and enter your search terms
 without having to leave Vim. Upon accepting a search your default browser will
 open with the results.
 
-For a little more detail why this plugin was written see my post
-[here](http://ryanpcarney.com/updatesnews/2013/6/11/frisk-the-web-search-vim-plugin).
-
-**Supported Search Engines:**
-* Google (image, web, English-translate)
+Supported search engines:
+* Google (image, web, English translate)
 * Bing (image, video, web)
+* IMDb
 * Stack Overflow
 * Wolfram Alpha 
-* Wikipedia
-* IMDb
-
-Usage
------
-    :Frisk<CR>
-
-    :Frisk "search terms"<CR>  <-- uses the default search engine 
-
-    :'<,'>Frisk<CR> <-- use visual selections instead of prompting for input
+* Wikipeida
 
 Demo
 ----
 
 ![Multiple Search Engines Demo](http://i.imgur.com/yzPI2lY.gif)
 
+----
+
 ![Visual Selection Demo](http://i.imgur.com/wzZuyFQ.gif)
+
+----
 
 ![Default Search Demo](http://i.imgur.com/BX2Z8Ns.gif)
 
-CONFIGURATION
--------------
-> g:frisk_default_engine
-
-Default = "google"
-
-Sets the default search engine for when Frisk is called with search terms
-
-Possible values:
-- "bing images"
-- "bing" 
-- "bing video" 
-- "imdb" 
-- "google" 
-- "google images" 
-- "google translate" 
-- "stack overflow" 
-- "wikipedia" 
-- "wolfram alpha"
-
 Installation
 -------------
-Use your favorite plugin manager.
-* [Neobundle](https://github.com/Shougo/neobundle.vim) <-- I use this one
+If you don't have an preferred method I recommend one of the following plugin
+managers.
+* [Neobundle](https://github.com/Shougo/neobundle.vim) 
 * [Vundle](https://github.com/gmarik/vundle)
 * [pathogen](https://github.com/tpope/vim-pathogen)
-* [VAM](https://github.com/MarcWeber/vim-addon-manager)
 
-Search Engine Structure
------------------------
-Here's an example of how Bing Search engine information is stored in Frisk
+Customization
+-------------
+Example: Adding Yahoo search engine
+call frisk#AddEngine('yahoo', 'http://search.yahoo.com/search?p=')
 
-```VimL
-let g:Bing = {
-            \'name' : 'Bing', 
-            \'types':{
-            \'video' : 'http://www.bing.com/video/search?q=',
-            \'images' : 'http://www.bing.com/images/search?q=',
-            \'web': 'http://www.bing.com/search?q='}}
-call add(g:Search, Bing)
-```
-
-You might see how another search engine could easily be integrated into Frisk.
-If you would like another search engine added contact me and I'll see what I
-can do.
-
+Example: Making Bing the default Search Engine
+frisk#DefaultEngine('bing')
 
 Known Issues
 ------------
@@ -89,12 +51,10 @@ Known Issues
 
 Make Frisk Better
 -----------------
-
 I'm pretty new to Vim Script so any tips are appreciated. Think you can make
 Frisk better? Fork it on GitHub and send a pull request. If you find bugs, want
 new functionality, or would like another search engine added contact me by
 making an issue on GitHub and I'll see what I can do. 
-
 
 Credits
 -------
