@@ -21,7 +21,7 @@ let s:engine.wikipedia       = 'http://en.wikipedia.org/w/index.php?search='
 let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:Main()                                                                  {{{
+" s:Main()                                                                   {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#Main(input) range
     call frisk#debug#PrintHeader('Main()')

@@ -12,12 +12,12 @@ For a little more detail why this plugin was written see my post
 [here](http://ryanpcarney.com/updatesnews/2013/6/11/frisk-the-web-search-vim-plugin).
 
 **Supported Search Engines:**
-* Bing (image, video, web)
-* IMDb
-* Stack Overflow
 * Google (image, web, English-translate)
+* Bing (image, video, web)
+* Stack Overflow
 * Wolfram Alpha 
 * Wikipedia
+* IMDb
 
 Usage
 -----
@@ -30,11 +30,11 @@ Usage
 Demo
 ----
 
-![Multiple Search Engines Demo](http://i.minus.com/ibnAscxZzh8agV.gif)
+![Multiple Search Engines Demo](http://i.imgur.com/yzPI2lY.gif)
 
-![Visual Selection Demo](http://i.minus.com/ibyU9aYE4tcFs6.gif)
+![Visual Selection Demo](http://i.imgur.com/wzZuyFQ.gif)
 
-![Default Search Demo](http://i.minus.com/ibk6UbFKFTZAtB.gif)
+![Default Search Demo](http://i.imgur.com/BX2Z8Ns.gif)
 
 CONFIGURATION
 -------------
