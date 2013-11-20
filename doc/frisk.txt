@@ -58,8 +58,8 @@ the |defualt-engine| is used.
 :'<,'>Frisk [engine]<CR> 
 
 Executes a search with using a visual selection as the query. The [engine]
-argument is optional and selects the search engine to to use.  When left out,
-the |defualt-engine| is used.
+argument is optional and selects the search engine to use.  When left out, the
+|defualt-engine| is used.
 
 ==============================================================================
 3.  Configuration                                         *frisk-configuration*
@@ -83,7 +83,7 @@ Frisk: -yahoo [search-terms]
 The default search engine used is Google, but this can be configured with the 
 frisk#DefaultEngine() function.
 
-Example: Make bing the default engine~
+Example: Make Bing the default engine~
 frisk#DefaultEngine('bing')
 
 Possible arguments to use with this function are as follows:
@@ -121,8 +121,6 @@ https://github.com/arecarn/frisk
 
 ==============================================================================
 6.  Change Log                                               *frisk-change-log*
-
-TODO: update me
 
 08 Jul 2013 - added support for Zsh for mac and linux
 07 Jul 2013 - fixed bug on OS X terminal using xdg-open rather than open

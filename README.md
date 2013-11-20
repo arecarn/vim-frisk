@@ -31,11 +31,12 @@ Demo
 
 Installation
 -------------
-If you don't have an preferred method I recommend one of the following plugin
+If you don't have an preferred, method I recommend one of the following plugin
 managers.
 * [Neobundle](https://github.com/Shougo/neobundle.vim) 
 * [Vundle](https://github.com/gmarik/vundle)
 * [pathogen](https://github.com/tpope/vim-pathogen)
+* [VAM](https://github.com/MarcWeber/vim-addon-manager)
 
 Customization
 -------------
@@ -72,4 +73,3 @@ Credits
 
 - https://github.com/g3orge/vim-voogle
   George Papanikolaou aka 'g3orge' similar project that helped me when I get the idea
-
