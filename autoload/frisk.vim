@@ -3,6 +3,11 @@
 let save_cpo = &cpo   " allow line continuation
 set cpo&vim
 
+augroup Mode
+    autocmd!
+    autocmd CursorMoved * let s:friskMode = mode()
+augroup END
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " Search Engines                                                             {{{
 " the is where all the search engine objects are defined
@@ -23,12 +28,31 @@ let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:Main()                                                                   {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! frisk#Main(input) range
+function! frisk#Main(count, firstLine, lastLine, input)
     call frisk#debug#PrintHeader('Main()')
     let Engine = s:HandleArg(a:input)
-    let query = s:GetQuery(a:input, a:firstline, a:lastline)
+    let query = s:GetQuery(a:input, a:count, a:firstLine, a:lastLine)
     let url = s:BuildURL(Engine, query)
     call frisk#Open(url)
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetRange()                                                               {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:GetRange(count, firstLine, lastLine)
+    call frisk#debug#PrintHeader('Get Range')
+    if a:count == 0 "no range given extract from command call
+        return ''
+    else "range was given
+        if s:friskMode  =~ '\vV|v|'
+            let result = s:GetVisualSelection()
+            call frisk#debug#PrintMsg('get visual range =['.result.']')
+        else 
+            let result = join(getline(a:firstLine, a:lastLine), "\n") " search the range instead
+            call frisk#debug#PrintMsg('get range =['.result.']')
+        endif
+    endif
+    return result
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -37,6 +61,7 @@ endfunction
 " If not use the default search engine
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:HandleArg(input)
+    call frisk#debug#PrintHeader('Handle Args')
     call frisk#debug#PrintMsg('The input is =['.a:input.']')
     " if default engine isn't set to anything let it be google
     if s:defualtEngine == ''
@@ -54,6 +79,7 @@ endfunction
 " s:DetermineEngine()                                                        {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:DetermineEng(arg) 
+    call frisk#debug#PrintHeader('Determine Engine')
     if a:arg =~# '^\s*$'   " no arguments found
         let Engine = s:defualtEngine
     else                " arguments found
@@ -72,24 +98,26 @@ endfunction
 " return the arg if it's valid otherwise an empty string is returned
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:GetValidArg(input)
+    call frisk#debug#PrintHeader('Get Valid Arguments')
     let arg = matchstr( a:input, '\C\v^\s*-\zs\a+\ze(\s+|$)')
     call frisk#debug#PrintMsg('The search engine name is =['.arg.']')
     return arg
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:GetQuery()                                                        {{{
-" Remove the query from the users input
+" s:GetQuery()                                                               {{{
+" extract the query from the users input
+" or 
+" extract the query from the users selection
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:GetQuery(input, frstline, lstline)
+function! s:GetQuery(input, count, firstLine, lastLine)
+    call frisk#debug#PrintHeader('Get Query')
     "remove the arguments and return the query
     let input = s:RemoveArg(a:input)
-    "extract the query
     let query = matchstr( input, '\v\C^(\s*-\a+\s+)?\s*\zs.*$')
     call frisk#debug#PrintMsg('The query is =['.query.']')
     if query =~ '^\s*$' " if there is no match get visual selection
-        let query = s:GetVisualQuery(a:frstline, a:lstline)
-        call frisk#debug#PrintMsg('Visual query =['.query.']')
+        let query = s:GetRange(a:count, a:firstLine, a:lastLine)
     endif 
     return query
 endfunction
@@ -103,15 +131,16 @@ function! s:RemoveArg(input)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-" s:GetVisualQuery()                                                  {{{
+" s:GetVisualQuery()                                                         {{{
 " Determine if a visual selection was given or if the user needs to be
 " prompted for input
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:GetVisualQuery(line1, line2)
+    call frisk#debug#PrintHeader('Get Visual Query')
     let lineNum = line('$')
     call frisk#debug#PrintMsg(lineNum . "= number of lines in the file")
     if (lineNum - 1) > (a:line2 - a:line1) "TODO if line = 1 in file
-        let SearchTerms = s:get_visual_selection()
+        let SearchTerms = s:GetVisualSelection()
     else
         let SearchTerms =''
     endif
@@ -120,18 +149,16 @@ function! s:GetVisualQuery(line1, line2)
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-"s:get_visual_selection()                                                    {{{
-"Credit: Peter Rodding http://peterodding.com/code/ returns the visual
-"selection
+"s:GetVisualSelection()                                                      {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:get_visual_selection()
-    " Why is this not a built-in Vim script function?!
-    let [lnum1, col1] = getpos("'<")[1:2] 
-    let [lnum2, col2] = getpos("'>")[1:2] 
-    let lines = getline(lnum1, lnum2) 
-    let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)] 
-    let lines[0] = lines[0][col1 - 1:] 
-    return join(lines, "\n") 
+function! s:GetVisualSelection()
+    try
+        let a_save = getreg('a')
+        normal! gv"ay
+        return @a
+    finally
+        call setreg('a', a_save)
+    endtry
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
@@ -139,7 +166,7 @@ endfunction
 " execute the search and open the browser
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:BuildURL(eng, query)
-        call frisk#debug#PrintHeader('BuildURL')
+    call frisk#debug#PrintHeader('BuildURL')
     let eng = a:eng
     let query = a:query
     let urlRegex = '\v(ht|f)tp:\/\/.*(\s\+|$)'
@@ -156,7 +183,7 @@ function! s:BuildURL(eng, query)
         let eng = substitute(eng , '\(.\)' , '\\\1' , 'g')
     endif 
     let url = eng.query
-        call frisk#debug#PrintMsg('['.url.']= url')
+    call frisk#debug#PrintMsg('['.url.']= url')
     return url 
 endfunction
 
@@ -241,3 +268,4 @@ endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " vim:foldmethod=marker
+

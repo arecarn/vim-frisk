@@ -10,15 +10,20 @@ endif
 let g:loaded_frisk = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-"Commands                                                                    {{{
-"if a command :FriskList or :Frisk already mapped then the command won't be
-"remapped
+" Commands                                                                    {{{
+" if a command :FriskList or :Frisk already mapped then the command won't be
+" remapped
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -nargs=* -range=% -complete=custom,frisk#SwitchCompletion Frisk 
-            \ <line1>,<line2> call frisk#Main(<q-args>)
+command! -nargs=* -range=0 -complete=custom,frisk#SwitchCompletion Frisk 
+            \ call frisk#Main(<count>, <line1>, <line2>, <q-args>)
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
-"Restore settings                                                            {{{
+" AutoCmd
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" Restore settings                                                            {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let &cpo = save_cpo
 
