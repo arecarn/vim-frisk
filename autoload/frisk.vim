@@ -1,10 +1,10 @@
-" Script settings                                                            
+" Script settings                                                            {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let save_cpo = &cpo   " allow line continuation
 set cpo&vim
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Search Engines                                                             
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" Search Engines                                                             {{{
 " the is where all the search engine objects are defined
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:defualtEngine = ''
@@ -21,21 +21,19 @@ let s:engine.wikipedia       = 'http://en.wikipedia.org/w/index.php?search='
 let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
 let s:engine.gitRepoCode     = 'https://github.com/search?q='
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:Main()                                                                   
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:Main()                                                                   {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#Main(input) range
     call frisk#debug#PrintHeader('Main()')
     let Engine = s:HandleArg(a:input)
     let query = s:GetQuery(a:input, a:firstline, a:lastline)
     let url = s:BuildURL(a:input, Engine, query)
-    let l:winview = winsaveview()
     call frisk#Open(url)
-    call winrestview(l:winview)
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:HandleArg()                                                              
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:HandleArg()                                                              {{{
 " If arguments are passed in set the search engine accordingly 
 " If not use the default search engine
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -53,8 +51,8 @@ function! s:HandleArg(input)
     return Engine 
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:DetermineEngine()                                                        
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:DetermineEngine()                                                        {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:DetermineEng(arg) 
     if a:arg =~# '^\s*$'   " no arguments found
@@ -69,8 +67,8 @@ function! s:DetermineEng(arg)
     return Engine
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:GetValidArg()                                                            
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetValidArg()                                                            {{{
 " test if there is an arg in the correct form.
 " return the arg if it's valid otherwise an empty string is returned
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -80,8 +78,8 @@ function! s:GetValidArg(input)
     return arg
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:GetQuery()                                                        
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetQuery()                                                        {{{
 " Remove the query from the users input
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:GetQuery(input, frstline, lstline)
@@ -97,16 +95,16 @@ function! s:GetQuery(input, frstline, lstline)
     return query
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:RemoveArg()                                                              
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:RemoveArg()                                                              {{{
 " Remove the arguments from the users input using search an replace
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:RemoveArg(input)
     return substitute( a:input, '\C\v^\s*\zs-\a+\ze(\s+|$)', '', 'g')
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:GetVisualQuery()                                                  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:GetVisualQuery()                                                  {{{
 " Determine if a visual selection was given or if the user needs to be
 " prompted for input
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -122,8 +120,8 @@ function! s:GetVisualQuery(line1, line2)
     return SearchTerms
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"s:get_visual_selection()                                                    
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+"s:get_visual_selection()                                                    {{{
 "Credit: Peter Rodding http://peterodding.com/code/ returns the visual
 "selection
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -137,8 +135,8 @@ function! s:get_visual_selection()
     return join(lines, "\n") 
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"s:get_repo()                                                    
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:get_repo()                                                               {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:get_repo()
     let repo = system('git remote show -n origin | grep Fetch | cut -d: -f3') 
@@ -148,8 +146,8 @@ function! s:get_repo()
     return repo
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:BuildURL()                                                               
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:BuildURL()                                                               {{{
 " execute the search and open the browser
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:BuildURL(input, eng, query)
@@ -185,8 +183,8 @@ function! s:BuildURL(input, eng, query)
     return url 
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" frisk#Open()                                                                 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" frisk#Open()                                                                 {{{
 " execute the search and open the browser
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#Open(url)
@@ -217,8 +215,8 @@ function! frisk#Open(url)
     endif
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" s:EncodeSearch()                                                           
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:EncodeSearch()                                                           {{{
 " encode the search so non reserved charactes can be used in searches.
 " http://webdesign.about.com/library/bl_url_encoding_table.htm
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -238,8 +236,8 @@ function! s:EncodeSerch(q)
     return join(hexList,"")
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" frisk#SwitchCompletion()                                                   
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" frisk#SwitchCompletion()                                                   {{{
 " Access the keys for the engine list, and add a '-' in front of them then
 " return the list of completion items in a newline operated list.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -251,21 +249,21 @@ function! frisk#SwitchCompletion(ArgLead, CmdLine, CursorPos)
     return completionOptions
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" frisk#AddEngine()                                                          
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" frisk#AddEngine()                                                          {{{
 " add a custom search engine to the list of engines
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#AddEngine(name, url)
     let s:engine[a:name] = a:url
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" frisk#DefaultEngine()                                                      
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" frisk#DefaultEngine()                                                      {{{
 " set the default search engine by name e.g. 'google' or 'stackOverFlow'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! frisk#DefaultEngine(name)
     let s:defualtEngine = s:engine[a:name]
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " vim:foldmethod=marker
