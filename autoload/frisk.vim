@@ -19,6 +19,7 @@ let s:engine.googleTranslate = 'http://translate.google.com/\#auto/en/'
 let s:engine.stackOverflow   = 'http://stackoverflow.com/search?q='
 let s:engine.wikipedia       = 'http://en.wikipedia.org/w/index.php?search='
 let s:engine.wolframAlpha    = 'http://www.wolframalpha.com/input/?i='
+let s:engine.gitRepoCode     = 'https://github.com/search?q='
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:Main()                                                                   {{{
@@ -27,7 +28,7 @@ function! frisk#Main(input) range
     call frisk#debug#PrintHeader('Main()')
     let Engine = s:HandleArg(a:input)
     let query = s:GetQuery(a:input, a:firstline, a:lastline)
-    let url = s:BuildURL(Engine, query)
+    let url = s:BuildURL(a:input, Engine, query)
     call frisk#Open(url)
 endfunction
 
@@ -135,11 +136,24 @@ function! s:get_visual_selection()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+" s:get_repo()                                                               {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:get_repo()
+    let repo = system('git remote show -n origin | grep Fetch | cut -d: -f3') 
+    " remove null byte from system call
+    let repo = substitute(repo,'\n','','g')
+    echom repo
+    return repo
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:BuildURL()                                                               {{{
 " execute the search and open the browser
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:BuildURL(eng, query)
+function! s:BuildURL(input, eng, query)
         call frisk#debug#PrintHeader('BuildURL')
+
+
     let eng = a:eng
     let query = a:query
     let urlRegex = '\v(ht|f)tp:\/\/.*(\s\+|$)'
@@ -155,7 +169,16 @@ function! s:BuildURL(eng, query)
     if matchstr(&shell, "zsh")  == "zsh" 
         let eng = substitute(eng , '\(.\)' , '\\\1' , 'g')
     endif 
-    let url = eng.query
+
+    let arg = matchstr( a:input, '\C\v^\s*-\zs\a+\ze(\s+|$)')
+    let refine = ''
+    if arg == "gitRepoCode"
+        let repo = s:get_repo()
+        let refine = '&type=Code'
+        let eng = substitute(eng,'search?q',repo.'/search?q','g')
+    endif
+
+    let url = eng.query.refine
         call frisk#debug#PrintMsg('['.url.']= url')
     return url 
 endfunction
@@ -177,15 +200,18 @@ function! frisk#Open(url)
             execute 'silent !open ' . a:url
         elseif os == 'Linux' " Linux
             call frisk#debug#PrintMsg('opening with linux')
-            execute 'silent !xdg-open ' . a:url . "&" 
+            " exec command in a new buffer
+            execute 'new | 0read !xdg-open ' . a:url . " > /dev/null 2>&1" 
+            " then quit that buffer returning to original file 
+            execute ':q'
         elseif has('win32unix') " Cygwin
             call frisk#debug#PrintMsg('opening with cygwin')
             execute 'silent !cmd /c start ' . a:url
         else 
-            throw 'unknown system, please create a issue'
+            throw 'unknown system, please create an issue'
         endif
     else
-        throw 'unknown system, please create a issue'
+        throw 'unknown system, please create an issue'
     endif
 endfunction
 
