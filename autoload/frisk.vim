@@ -3,7 +3,7 @@
 let save_cpo = &cpo   " allow line continuation
 set cpo&vim
 
-augroup Mode
+augroup FriskMode
     autocmd!
     autocmd CursorMoved * let s:friskMode = mode()
 augroup END
@@ -38,6 +38,7 @@ endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 " s:GetRange()                                                               {{{
+" If not use the default search engine
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:GetRange(count, firstLine, lastLine)
     call frisk#debug#PrintHeader('Get Range')
