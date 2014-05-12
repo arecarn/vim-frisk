@@ -187,6 +187,7 @@ function! frisk#Open(url)
     else
         throw 'unknown system, please create a issue'
     endif
+    redraw!
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
