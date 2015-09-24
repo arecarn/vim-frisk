@@ -20,8 +20,8 @@ ______________________________________________________________________________
      1. Overview .................................... |frisk-overview|
      2. Usage ....................................... |frisk-usage|
      3. Configuration ............................... |frisk-configuration|
-        3.1 Custom Search Engine .................... |frisk-custom-engine| 
-        3.2 Default Search Engine ................... |frisk-default-engine| 
+        3.1 Custom Search Engine .................... |frisk-custom-engine|
+        3.2 Default Search Engine ................... |frisk-default-engine|
      4. Known Issues ................................ |frisk-known-issues|
      5. Contribute .................................. |frisk-contribute|
         5.1 Custom Search Engine .................... |frisk-custom-engine||
@@ -42,20 +42,20 @@ Supported search engines:
 * IMDb
 * Google (image, web, English translate)
 * Stack Overflow
-* Wolfram Alpha 
+* Wolfram Alpha
 * Wikipeida
 
 ==============================================================================
 2.  Usage                                                         *frisk-usage*
 
-:Frisk [engine] [search-terms]<CR>  
+:Frisk [engine] [search-terms]<CR>
 
 Executes a search with using [search-terms] as the query.  The [engine]
 argument is optional and selects the search engine to to use.  When left out,
 the |defualt-engine| is used.
 
 
-:'<,'>Frisk [engine]<CR> 
+:'<,'>Frisk [engine]<CR>
 
 Executes a search with using a visual selection as the query. The [engine]
 argument is optional and selects the search engine to use.  When left out, the
@@ -80,7 +80,7 @@ Frisk: -yahoo [search-terms]
 ------------------------------------------------------------------------------
 3.2 Default Search Engine                                *frisk-default-engine*
 
-The default search engine used is Google, but this can be configured with the 
+The default search engine used is Google, but this can be configured with the
 frisk#DefaultEngine() function.
 
 Example: Make Bing the default engine~
@@ -88,18 +88,18 @@ frisk#DefaultEngine('bing')
 
 Possible arguments to use with this function are as follows:
  "bingImages"
- "bing" 
- "bingVideo" 
- "imdb" 
- "google" 
- "googleImages" 
- "googleTranslate" 
- "stackOverflow" 
- "wikipedia" 
+ "bing"
+ "bingVideo"
+ "imdb"
+ "google"
+ "googleImages"
+ "googleTranslate"
+ "stackOverflow"
+ "wikipedia"
  "wolframAlpha"
 
 Note: The default engine can be set to custom search engine if it is
-initialized before the default 
+initialized before the default
 
 Example: Adding yahoo engine then setting it to the default~
 
@@ -109,10 +109,10 @@ frisk#DefaultEngine('yahoo')
 ==============================================================================
 4.  Known Issues                                           *frisk-known-issues*
 
-- Can't search visual selection on a buffer with only 1 line 
+- Can't search visual selection on a buffer with only 1 line
 
 https://github.com/arecarn/frisk/issues?state=open
-                                                           
+
 ==============================================================================
 5.  Contribute                                               *frisk-contribute*
 
@@ -125,7 +125,7 @@ https://github.com/arecarn/frisk
 08 Jul 2013 - added support for Zsh for mac and linux
 07 Jul 2013 - fixed bug on OS X terminal using xdg-open rather than open
 06 Jul 2013 - added support for default engine and disabling engines
-14 Jun 2013 - added support for searching visual selection 
+14 Jun 2013 - added support for searching visual selection
 10 Jun 2013 - added URL encoding 13 Jun 2013 -fixed URL encoding bug
 
 ==============================================================================
@@ -143,27 +143,27 @@ Sources and credits for the plugin
   Peter Rodding aka 'xolox' provided function to capture visual selection
 
 - http://patorjk.com/
-  ASCII font courtesy of Patrick Gillespie 
+  ASCII font courtesy of Patrick Gillespie
 
 - https://github.com/g3orge/vim-voogle
-  George Papanikolaou aka 'g3orge' project voogle was a similar project that 
+  George Papanikolaou aka 'g3orge' project voogle was a similar project that
   helped me get a start
 
 ==============================================================================
 8.  License                                                     *frisk-license*
 
       DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE Version 2, December 2004
- 
+
                Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
- 
+
       Everyone is permitted to copy and distribute verbatim or modified
     copies of this license document, and changing it is allowed as long as
                              the name is changed.
- 
+
             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE TERMS AND
             CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
- 
+
                    0. You just DO WHAT THE FUCK YOU WANT TO
-                                                                              
+
 ==============================================================================
 vim:tw=78:sw=4:ft=help:norl:fdm=manual:
